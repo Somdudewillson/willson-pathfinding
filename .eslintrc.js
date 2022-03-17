@@ -19,5 +19,6 @@ module.exports = {
   // (listed in alphabetical order)
   rules: {
     // Insert changed or disabled rules here, if necessary
+    "no-plusplus": "off",
   },
 };

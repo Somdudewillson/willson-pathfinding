@@ -21,5 +21,11 @@ module.exports = {
     // Insert changed or disabled rules here, if necessary
     "no-plusplus": "off",
     "default-case-last": "off",
+    "@typescript-eslint/unbound-method": [
+      "error",
+      {
+        ignoreStatic: true,
+      },
+    ],
   },
 };

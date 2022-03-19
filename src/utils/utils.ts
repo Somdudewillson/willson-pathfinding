@@ -216,7 +216,18 @@ export function mirrorQuad(origin: Vector, lineX: float, lineY: float): Vector {
 
 /** Convert world position `Vector` to grid position. */
 export function worldToGridPos(worldPos: Vector): Vector {
+  return Vector(
+    Math.round(worldPos.X / 40 - 2),
+    Math.round(worldPos.Y / 40 - 4),
+  );
+}
+/** Convert world position `Vector` to grid position. */
+export function fastWorldToGridPos(worldPos: Vector): Vector {
   return Vector(worldPos.X / 40 - 2, worldPos.Y / 40 - 4);
+}
+/** Convert grid position `Vector` to world position. */
+export function gridToWorldPos(gridPos: Vector): Vector {
+  return Vector((gridPos.X + 2) * 40, (gridPos.Y + 4) * 40);
 }
 /** Get the grid position of a `DoorSlot` in a room of the given `RoomShape` */
 export function getSlotGridPos(slot: DoorSlot, shape: RoomShape): Vector {

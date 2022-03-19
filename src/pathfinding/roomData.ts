@@ -3,7 +3,7 @@ import {
   FlatGridVector,
   shiftFlat,
 } from "../utils/flatGridVector";
-import { isValidFlatGridPos } from "../utils/utils";
+import { gridToWorldPos, isValidFlatGridPos } from "../utils/utils";
 
 export const enum Accessibility {
   NONE = 0,
@@ -27,7 +27,9 @@ export class RoomData {
       return undefined;
     }
 
-    return this.sourceRoom.GetGridEntityFromPos(expandVector(pos));
+    return this.sourceRoom.GetGridEntityFromPos(
+      gridToWorldPos(expandVector(pos)),
+    );
   }
 
   /**

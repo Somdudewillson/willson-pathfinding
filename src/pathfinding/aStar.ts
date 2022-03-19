@@ -23,8 +23,8 @@ function reconstructPath(
 /**
  * A* Pathfinder
  *
- * @param startVec starting position.
- * @param goalVec ending position.
+ * @param startVec starting position on the grid.
+ * @param goalVec ending position on the grid.
  * @param heuristic `heuristic(current, goal)` estimates the distance between current and goal.
  * @param getNeighbors function which returns all valid neighbors of a specified position.
  * @param epsilon static weighting factor-must be >1, higher values trade accuracy for speed.

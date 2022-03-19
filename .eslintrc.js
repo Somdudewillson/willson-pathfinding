@@ -20,5 +20,6 @@ module.exports = {
   rules: {
     // Insert changed or disabled rules here, if necessary
     "no-plusplus": "off",
+    "default-case-last": "off",
   },
 };

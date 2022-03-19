@@ -1,11 +1,25 @@
 {
     "version": "0.2",
     "words": [
+        "chebyshev",
         "dbaeumer",
+        "ENTITYTYPE",
+        "ENTITYVARIANT",
+        "GRIDCOLL",
         "isaacscript",
+        "NOPITS",
+        "pather",
+        "pathfind",
+        "pathfinding",
+        "Pathing",
+        "PITSONLY",
+        "plusplus",
+        "ROOMSHAPE",
         "sarisia",
         "steamapps",
         "technote",
-        "tstl"
+        "TESTDRONE",
+        "tstl",
+        "willson"
     ]
 }

@@ -74,6 +74,11 @@ export class RoomData {
           return false;
         }
         break;
+      case EntityGridCollisionClass.GRIDCOLL_NOPITS:
+        if (gridType === GridEntityType.GRID_PIT) {
+          break;
+        }
+      // Falls through.
       case EntityGridCollisionClass.GRIDCOLL_BULLET:
       case EntityGridCollisionClass.GRIDCOLL_GROUND:
         if (
@@ -82,11 +87,6 @@ export class RoomData {
           gridType === GridEntityType.GRID_PRESSURE_PLATE ||
           gridType === GridEntityType.GRID_SPIDERWEB
         ) {
-          break;
-        }
-      // Falls through.
-      case EntityGridCollisionClass.GRIDCOLL_NOPITS:
-        if (gridType === GridEntityType.GRID_PIT) {
           break;
         }
         return false;

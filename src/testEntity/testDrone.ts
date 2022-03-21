@@ -8,7 +8,6 @@ const pather = new Pathfinder(EntityGridCollisionClass.GRIDCOLL_GROUND);
 
 export function testDroneUpdate(self: EntityNPC): boolean | void {
   if (self.Variant !== TESTDRONE_ENTITYVARIANT) {
-    self.Kill();
     return;
   }
 
@@ -22,12 +21,14 @@ export function testDroneUpdate(self: EntityNPC): boolean | void {
       return true;
     }
 
+    const startTime = Isaac.GetTime();
     if (pather.pathfind(self.Position, goal)) {
       currentPath = pather.getPath();
       data.path = currentPath;
     } else {
       return true;
     }
+    print(`${Isaac.GetTime() - startTime} ms`);
   }
 
   const nextPos = currentPath[0];
@@ -40,7 +41,8 @@ export function testDroneUpdate(self: EntityNPC): boolean | void {
     return true;
   }
 
-  self.Velocity = nextPos.sub(self.Position).Resized(2);
+  const desiredVelocity = nextPos.sub(self.Position).Resized(2);
+  self.AddVelocity(desiredVelocity.sub(self.Velocity));
 
   return true;
 }

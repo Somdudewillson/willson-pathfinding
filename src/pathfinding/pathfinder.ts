@@ -34,6 +34,16 @@ export class Pathfinder {
   }
 
   public gridPathfind(startVec: Vector, goalVec: Vector): boolean {
+    if (
+      !Pathfinder.currentRoom.isPathPossible(
+        startVec,
+        goalVec,
+        this.collisionClass,
+      )
+    ) {
+      return false;
+    }
+
     const foundPath = findAStarPath(
       startVec,
       goalVec,

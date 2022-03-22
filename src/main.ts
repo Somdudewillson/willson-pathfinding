@@ -14,6 +14,8 @@ export function main(): void {
 
   // Set a callback function that corresponds to when a new run is started
   mod.AddCallback(ModCallbacks.MC_POST_NEW_ROOM, Pathfinder.updateRoom);
+  mod.AddCallback(ModCallbacks.MC_POST_RENDER, Pathfinder.debugDisplayGrid);
+
   mod.AddCallback(
     ModCallbacks.MC_PRE_NPC_UPDATE,
     testDroneUpdate,

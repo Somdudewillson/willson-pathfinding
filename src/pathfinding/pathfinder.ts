@@ -22,6 +22,13 @@ export class Pathfinder {
     Pathfinder.currentRoom = new RoomData(Game().GetRoom());
   }
 
+  public static debugDisplayGrid(): void {
+    if (Pathfinder.currentRoom === undefined) {
+      return;
+    }
+    Pathfinder.currentRoom.renderDebugDisplayGrid();
+  }
+
   public pathfind(startVec: Vector, goalVec: Vector): boolean {
     return this.gridPathfind(worldToGridPos(startVec), worldToGridPos(goalVec));
   }

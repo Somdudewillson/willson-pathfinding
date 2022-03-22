@@ -221,6 +221,36 @@ export class RoomData {
     return true;
   }
 
+  public isPathPossible(
+    startPos: Vector,
+    endPos: Vector,
+    collisionClass: EntityGridCollisionClass,
+  ): boolean {
+    let groupMap: FastMap<FlatGridVector, number>;
+    switch (collisionClass) {
+      default:
+      case EntityGridCollisionClass.GRIDCOLL_WALLS_X:
+      case EntityGridCollisionClass.GRIDCOLL_WALLS_Y:
+      case EntityGridCollisionClass.GRIDCOLL_WALLS:
+        groupMap = this.wallBlockedAreas;
+        break;
+      case EntityGridCollisionClass.GRIDCOLL_NOPITS:
+        groupMap = this.pitBlockedAreas;
+        break;
+      case EntityGridCollisionClass.GRIDCOLL_BULLET:
+      case EntityGridCollisionClass.GRIDCOLL_GROUND:
+        groupMap = this.groundBlockedAreas;
+        break;
+      case EntityGridCollisionClass.GRIDCOLL_PITSONLY:
+        groupMap = this.pitAreas;
+        break;
+    }
+
+    const startGroup = groupMap.get(flattenVector(startPos));
+    const endGroup = groupMap.get(flattenVector(endPos));
+    return startGroup === endGroup && startGroup !== -1;
+  }
+
   private static getCardinalNeighbors(pos: FlatGridVector): FlatGridVector[] {
     return [
       shiftFlat(pos, -1, 0),

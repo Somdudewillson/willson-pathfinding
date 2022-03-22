@@ -699,3 +699,30 @@ export function getTopLeftPos(shape: RoomShape): Vector {
       return Vector(13, 0);
   }
 }
+/** Get the bottom right pos of a given `RoomShape`. */
+export function getBottomRightPos(shape: RoomShape): Vector {
+  switch (shape) {
+    default:
+    case RoomShape.ROOMSHAPE_1x1:
+      return Vector(12, 6);
+    case RoomShape.ROOMSHAPE_1x2:
+      return Vector(12, 13);
+    case RoomShape.ROOMSHAPE_2x1:
+      return Vector(25, 6);
+    case RoomShape.ROOMSHAPE_2x2:
+    case RoomShape.ROOMSHAPE_LTL:
+    case RoomShape.ROOMSHAPE_LTR:
+    case RoomShape.ROOMSHAPE_LBL:
+      return Vector(25, 13);
+    case RoomShape.ROOMSHAPE_LBR:
+      return Vector(12, 13);
+    case RoomShape.ROOMSHAPE_IH:
+      return Vector(12, 4);
+    case RoomShape.ROOMSHAPE_IIH:
+      return Vector(25, 4);
+    case RoomShape.ROOMSHAPE_IIV:
+      return Vector(8, 13);
+    case RoomShape.ROOMSHAPE_IV:
+      return Vector(8, 6);
+  }
+}

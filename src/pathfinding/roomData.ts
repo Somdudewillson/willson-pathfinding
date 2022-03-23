@@ -191,11 +191,6 @@ export class RoomData {
       if (cachedEntity.sameAs(actualEntity)) {
         continue;
       }
-      Isaac.DebugString(
-        `change at ${expandVector(
-          testTile[0],
-        )}; was ${cachedEntity.toString()} -> now ${actualEntity.toString()}`,
-      );
 
       for (const i of $range(0, 3)) {
         const testCollision = RoomData.collisionTypes[i];
@@ -377,9 +372,7 @@ export class RoomData {
             gridEntity.state === PoopState.COMPLETELY_DESTROYED) ||
           (gridType === GridEntityType.GRID_PIT && gridEntity.state === 1) ||
           (gridType === GridEntityType.GRID_TNT &&
-            gridEntity.state === TNTState.EXPLODED) ||
-          (gridType === GridEntityType.GRID_SPIKES_ONOFF &&
-            gridEntity.state === SpikesOnOffState.OFF)
+            gridEntity.state === TNTState.EXPLODED)
         ) {
           break;
         }

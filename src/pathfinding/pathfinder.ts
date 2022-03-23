@@ -18,8 +18,12 @@ export class Pathfinder {
     this.collisionClass = collisionClass;
   }
 
-  public static updateRoom(): void {
+  public static rebuildRoom(): void {
     Pathfinder.currentRoom = new RoomData(Game().GetRoom());
+  }
+
+  public static updateRoom(): void {
+    Pathfinder.currentRoom.incrementalUpdateAreas();
   }
 
   public static debugDisplayGrid(): void {

@@ -13,7 +13,8 @@ export function main(): void {
   const mod = RegisterMod(MOD_NAME, 1);
 
   // Set a callback function that corresponds to when a new run is started
-  mod.AddCallback(ModCallbacks.MC_POST_NEW_ROOM, Pathfinder.updateRoom);
+  mod.AddCallback(ModCallbacks.MC_POST_NEW_ROOM, Pathfinder.rebuildRoom);
+  mod.AddCallback(ModCallbacks.MC_POST_UPDATE, Pathfinder.updateRoom);
   mod.AddCallback(ModCallbacks.MC_POST_RENDER, Pathfinder.debugDisplayGrid);
 
   mod.AddCallback(

@@ -211,8 +211,9 @@ export class RoomData {
         }
 
         if (isNowPassable) {
-          Isaac.DebugString(`attempting to add passable tile: area map ${i}`);
           this.addPassableTile(i, testTile[0]);
+        } else {
+          this.removePassableTile(i, testTile[0]);
         }
       }
 
@@ -237,13 +238,50 @@ export class RoomData {
         continue;
       }
 
-      Isaac.DebugString(`Flood filling with ${areaAtPos}`);
       this.floodFillArea(areaMap, tilePos, testCollision, areaAtPos, false);
       areaMap.set(tilePos, areaAtPos);
       return;
     }
 
     areaMap.set(tilePos, this.nextAreaIndex[areaMapIndex]++);
+  }
+
+  removePassableTile(areaMapIndex: int, tilePos: FlatGridVector): void {
+    const testCollision = RoomData.collisionTypes[areaMapIndex];
+    const areaMap = this.areaMaps[areaMapIndex];
+
+    if (areaMap.get(tilePos) === -1) {
+      return;
+    }
+
+    const adjAreas = [];
+    for (const adjPos of RoomData.getCardinalNeighbors(tilePos)) {
+      if (!isValidFlatGridPos(adjPos, this.shape)) {
+        continue;
+      }
+      const areaAtPos = areaMap.get(adjPos);
+      if (areaAtPos === undefined || areaAtPos === -1) {
+        continue;
+      }
+      adjAreas.push(adjPos);
+    }
+
+    if (adjAreas.length > 1) {
+      const filledAreas = new FastSet<int>();
+
+      for (const adjPos of adjAreas) {
+        const areaAtPos = areaMap.get(adjPos);
+        if (filledAreas.has(areaAtPos)) {
+          continue;
+        }
+
+        const fillArea = this.nextAreaIndex[areaMapIndex]++;
+        this.floodFillArea(areaMap, adjPos, testCollision, fillArea, false);
+        filledAreas.add(fillArea);
+      }
+    }
+
+    areaMap.set(tilePos, -1);
   }
 
   getGridEntity(pos: FlatGridVector): GridEntity | undefined {
@@ -339,7 +377,9 @@ export class RoomData {
             gridEntity.state === PoopState.COMPLETELY_DESTROYED) ||
           (gridType === GridEntityType.GRID_PIT && gridEntity.state === 1) ||
           (gridType === GridEntityType.GRID_TNT &&
-            gridEntity.state === TNTState.EXPLODED)
+            gridEntity.state === TNTState.EXPLODED) ||
+          (gridType === GridEntityType.GRID_SPIKES_ONOFF &&
+            gridEntity.state === SpikesOnOffState.OFF)
         ) {
           break;
         }

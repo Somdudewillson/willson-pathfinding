@@ -337,7 +337,9 @@ export class RoomData {
             gridEntity.state !== RockState.UNBROKEN) ||
           (gridType === GridEntityType.GRID_POOP &&
             gridEntity.state === PoopState.COMPLETELY_DESTROYED) ||
-          (gridType === GridEntityType.GRID_PIT && gridEntity.state === 1)
+          (gridType === GridEntityType.GRID_PIT && gridEntity.state === 1) ||
+          (gridType === GridEntityType.GRID_TNT &&
+            gridEntity.state === TNTState.EXPLODED)
         ) {
           break;
         }

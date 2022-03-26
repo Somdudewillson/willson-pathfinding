@@ -1,9 +1,9 @@
 import { EntityTypeCustom } from "./enums/EntityTypeCustom";
 import { Pathfinder } from "./pathfinding/pathfinder";
-import { testDroneUpdate } from "./testEntity/testDrone";
+import { testDronePreNPCUpdate } from "./testEntity/testDrone";
 import {
-  worstCaseDroneInit,
-  worstCaseDroneUpdate,
+  worstCaseDronePostNPCInit,
+  worstCaseDronePreNPCUpdate,
 } from "./testEntity/worstCaseDrone";
 
 const MOD_NAME = "willson-pathfinding";
@@ -11,25 +11,25 @@ const MOD_NAME = "willson-pathfinding";
 export function main(): void {
   const mod = RegisterMod(MOD_NAME, 1);
 
-  mod.AddCallback(ModCallbacks.MC_POST_NEW_ROOM, Pathfinder.rebuildRoom);
-  mod.AddCallback(ModCallbacks.MC_POST_UPDATE, Pathfinder.updateRoom);
-  mod.AddCallback(ModCallbacks.MC_POST_RENDER, Pathfinder.debugDisplayGrid);
+  mod.AddCallback(ModCallbacks.MC_POST_UPDATE, Pathfinder.updateRoom); // 1
+  mod.AddCallback(ModCallbacks.MC_POST_RENDER, Pathfinder.debugDisplayGrid); // 2
+  mod.AddCallback(ModCallbacks.MC_POST_NEW_ROOM, Pathfinder.rebuildRoom); // 19
 
   mod.AddCallback(
-    ModCallbacks.MC_PRE_NPC_UPDATE,
-    testDroneUpdate,
-    EntityTypeCustom.DRONE,
-  );
-  mod.AddCallback(
     ModCallbacks.MC_POST_NPC_INIT,
-    worstCaseDroneInit,
+    worstCaseDronePostNPCInit,
     EntityTypeCustom.DRONE,
-  );
+  ); // 27
   mod.AddCallback(
     ModCallbacks.MC_PRE_NPC_UPDATE,
-    worstCaseDroneUpdate,
+    testDronePreNPCUpdate,
     EntityTypeCustom.DRONE,
-  );
+  ); // 69
+  mod.AddCallback(
+    ModCallbacks.MC_PRE_NPC_UPDATE,
+    worstCaseDronePreNPCUpdate,
+    EntityTypeCustom.DRONE,
+  ); // 69
 
   Isaac.DebugString(`${MOD_NAME} initialized.`);
 }

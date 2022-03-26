@@ -1,12 +1,12 @@
-/* eslint-disable consistent-return */
 import { DroneVariant } from "../enums/DroneVariant";
 import { Pathfinder } from "../pathfinding/pathfinder";
 
 const pather = new Pathfinder(EntityGridCollisionClass.GRIDCOLL_GROUND);
 
-export function testDroneUpdate(self: EntityNPC): boolean | void {
+// ModCallbacks.MC_PRE_NPC_UPDATE (69)
+export function testDronePreNPCUpdate(self: EntityNPC): boolean | void {
   if (self.Variant !== DroneVariant.TEST) {
-    return;
+    return undefined;
   }
 
   const data = self.GetData();
@@ -26,6 +26,7 @@ export function testDroneUpdate(self: EntityNPC): boolean | void {
     } else {
       return true;
     }
+
     print(`${Isaac.GetTime() - startTime} ms`);
   }
 

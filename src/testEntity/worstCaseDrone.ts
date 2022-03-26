@@ -1,10 +1,10 @@
-/* eslint-disable consistent-return */
 import { DroneVariant } from "../enums/DroneVariant";
 import { Pathfinder } from "../pathfinding/pathfinder";
 
 const pather = new Pathfinder(EntityGridCollisionClass.GRIDCOLL_GROUND);
 
-export function worstCaseDroneInit(self: EntityNPC): boolean | void {
+// ModCallbacks.MC_POST_NPC_INIT (27)
+export function worstCaseDronePostNPCInit(self: EntityNPC): void {
   if (self.Variant !== DroneVariant.WORST_CASE) {
     return;
   }
@@ -16,9 +16,10 @@ export function worstCaseDroneInit(self: EntityNPC): boolean | void {
   self.Position = room.GetGridPosition(118);
 }
 
-export function worstCaseDroneUpdate(self: EntityNPC): boolean | void {
+// ModCallbacks.MC_PRE_NPC_UPDATE (69)
+export function worstCaseDronePreNPCUpdate(self: EntityNPC): boolean | void {
   if (self.Variant !== DroneVariant.WORST_CASE) {
-    return;
+    return undefined;
   }
 
   const goal = Game().GetRoom().GetGridPosition(16);

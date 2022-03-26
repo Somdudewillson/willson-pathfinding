@@ -4,22 +4,6 @@ export function hasFlag(flags: int, testFlag: int): boolean {
   return (flags & testFlag) === testFlag;
 }
 
-export function directionToDegrees(dir: Direction): number {
-  switch (dir) {
-    default:
-    case Direction.NO_DIRECTION:
-    // Falls through
-    case Direction.RIGHT:
-      return 0;
-    case Direction.DOWN:
-      return 90;
-    case Direction.LEFT:
-      return 180;
-    case Direction.UP:
-      return 270;
-  }
-}
-
 export function rotateDirection(
   dir: Direction,
   rotateDir: Direction,

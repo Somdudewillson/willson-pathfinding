@@ -1,9 +1,5 @@
 import { expandVector, FlatGridVector } from "./flatGridVector";
 
-export function hasFlag(flags: int, testFlag: int): boolean {
-  return (flags & testFlag) === testFlag;
-}
-
 export function rotateDirection(
   dir: Direction,
   rotateDir: Direction,

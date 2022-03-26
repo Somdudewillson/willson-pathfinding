@@ -4,8 +4,6 @@
         "ATTACKFLY",
         "chebyshev",
         "dbaeumer",
-        "ENTITYTYPE",
-        "ENTITYVARIANT",
         "GRIDCOLL",
         "isaacscript",
         "NOPITS",
@@ -20,9 +18,7 @@
         "sarisia",
         "steamapps",
         "technote",
-        "TESTDRONE",
         "tstl",
-        "willson",
-        "WORSTCASEDRONE"
+        "willson"
     ]
 }

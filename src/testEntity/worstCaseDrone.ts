@@ -1,13 +1,11 @@
 /* eslint-disable consistent-return */
+import { DroneVariant } from "../enums/DroneVariant";
 import { Pathfinder } from "../pathfinding/pathfinder";
-
-export const TESTDRONE_ENTITYTYPE = 18;
-export const WORSTCASEDRONE_ENTITYVARIANT = 246;
 
 const pather = new Pathfinder(EntityGridCollisionClass.GRIDCOLL_GROUND);
 
 export function worstCaseDroneInit(self: EntityNPC): boolean | void {
-  if (self.Variant !== WORSTCASEDRONE_ENTITYVARIANT) {
+  if (self.Variant !== DroneVariant.WORST_CASE) {
     return;
   }
 
@@ -19,9 +17,10 @@ export function worstCaseDroneInit(self: EntityNPC): boolean | void {
 }
 
 export function worstCaseDroneUpdate(self: EntityNPC): boolean | void {
-  if (self.Variant !== WORSTCASEDRONE_ENTITYVARIANT) {
+  if (self.Variant !== DroneVariant.WORST_CASE) {
     return;
   }
+
   const goal = Game().GetRoom().GetGridPosition(16);
 
   const startTime = Isaac.GetTime();

@@ -1,8 +1,6 @@
+import { EntityTypeCustom } from "./enums/EntityTypeCustom";
 import { Pathfinder } from "./pathfinding/pathfinder";
-import {
-  testDroneUpdate,
-  TEST_DRONE_ENTITY_TYPE,
-} from "./testEntity/testDrone";
+import { testDroneUpdate } from "./testEntity/testDrone";
 import {
   worstCaseDroneInit,
   worstCaseDroneUpdate,
@@ -20,17 +18,17 @@ export function main(): void {
   mod.AddCallback(
     ModCallbacks.MC_PRE_NPC_UPDATE,
     testDroneUpdate,
-    TEST_DRONE_ENTITY_TYPE,
+    EntityTypeCustom.DRONE,
   );
   mod.AddCallback(
     ModCallbacks.MC_POST_NPC_INIT,
     worstCaseDroneInit,
-    TEST_DRONE_ENTITY_TYPE,
+    EntityTypeCustom.DRONE,
   );
   mod.AddCallback(
     ModCallbacks.MC_PRE_NPC_UPDATE,
     worstCaseDroneUpdate,
-    TEST_DRONE_ENTITY_TYPE,
+    EntityTypeCustom.DRONE,
   );
 
   Isaac.DebugString(`${MOD_NAME} initialized.`);

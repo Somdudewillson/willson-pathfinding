@@ -2,8 +2,6 @@
 import { DroneVariant } from "../enums/DroneVariant";
 import { Pathfinder } from "../pathfinding/pathfinder";
 
-export const TEST_DRONE_ENTITY_TYPE = EntityType.ENTITY_ATTACKFLY;
-
 const pather = new Pathfinder(EntityGridCollisionClass.GRIDCOLL_GROUND);
 
 export function testDroneUpdate(self: EntityNPC): boolean | void {

@@ -1,27 +1,6 @@
 import { SymmetryType } from "../enums/SymmetryType";
 import { expandVector, FlatGridVector } from "./flatGridVector";
 
-export function checkLine(
-  room: Room,
-  position1: Vector,
-  position2: Vector,
-  lineCheckMode: LineCheckMode,
-  gridPathThreshold?: number | undefined,
-  ignoreWalls?: boolean | undefined,
-  ignoreCrushable?: boolean | undefined,
-): { clear: boolean; collidePos: Vector } {
-  const [isClear, endPos] = room.CheckLine(
-    position1,
-    position2,
-    lineCheckMode,
-    gridPathThreshold,
-    ignoreWalls,
-    ignoreCrushable,
-  );
-
-  return { clear: isClear, collidePos: endPos };
-}
-
 export function getMirroredPos(
   shape: RoomShape,
   symmetry: SymmetryType,

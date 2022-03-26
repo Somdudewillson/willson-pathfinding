@@ -553,6 +553,7 @@ export function isValidFlatGridPos(
 ): boolean {
   return isValidGridPos(expandVector(pos), shape);
 }
+
 /** Get a `RoomShape`'s layout size. This is **NOT** the size of the `RoomShape`'s actual contents! */
 export function getRoomShapeSize(shape: RoomShape): Vector {
   switch (shape) {
@@ -575,7 +576,8 @@ export function getRoomShapeSize(shape: RoomShape): Vector {
       return Vector(26, 14);
   }
 }
-/** Get the size of a `RoomShape`'s internal space.  Note that this is a bounding box. */
+
+/** Get the size of a `RoomShape`'s internal space. Note that this is a bounding box. */
 export function getRoomShapeBounds(shape: RoomShape): Vector {
   switch (shape) {
     default:
@@ -601,6 +603,7 @@ export function getRoomShapeBounds(shape: RoomShape): Vector {
       return Vector(26, 14);
   }
 }
+
 /** Get the volume of a `RoomShape`'s internal space. */
 export function getRoomShapeVolume(shape: RoomShape): int {
   switch (shape) {
@@ -628,6 +631,7 @@ export function getRoomShapeVolume(shape: RoomShape): int {
       return 26 * 7 + 13 * 7;
   }
 }
+
 /** Get the top left pos of a given `RoomShape`. */
 export function getTopLeftPos(shape: RoomShape): Vector {
   switch (shape) {
@@ -648,32 +652,5 @@ export function getTopLeftPos(shape: RoomShape): Vector {
       return Vector(4, 0);
     case RoomShape.ROOMSHAPE_LTL:
       return Vector(13, 0);
-  }
-}
-/** Get the bottom right pos of a given `RoomShape`. */
-export function getBottomRightPos(shape: RoomShape): Vector {
-  switch (shape) {
-    default:
-    case RoomShape.ROOMSHAPE_1x1:
-      return Vector(12, 6);
-    case RoomShape.ROOMSHAPE_1x2:
-      return Vector(12, 13);
-    case RoomShape.ROOMSHAPE_2x1:
-      return Vector(25, 6);
-    case RoomShape.ROOMSHAPE_2x2:
-    case RoomShape.ROOMSHAPE_LTL:
-    case RoomShape.ROOMSHAPE_LTR:
-    case RoomShape.ROOMSHAPE_LBL:
-      return Vector(25, 13);
-    case RoomShape.ROOMSHAPE_LBR:
-      return Vector(12, 13);
-    case RoomShape.ROOMSHAPE_IH:
-      return Vector(12, 4);
-    case RoomShape.ROOMSHAPE_IIH:
-      return Vector(25, 4);
-    case RoomShape.ROOMSHAPE_IIV:
-      return Vector(8, 13);
-    case RoomShape.ROOMSHAPE_IV:
-      return Vector(8, 6);
   }
 }

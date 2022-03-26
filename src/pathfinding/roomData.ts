@@ -1,3 +1,7 @@
+import {
+  copyVector,
+  getRoomShapeBottomRightPosition,
+} from "isaacscript-common";
 import { FastMap } from "../utils/fastMap";
 import { FastSet } from "../utils/fastSet";
 import {
@@ -8,7 +12,6 @@ import {
 } from "../utils/flatGridVector";
 import { GridEntityData } from "../utils/gridEntityData";
 import {
-  getBottomRightPos,
   getTopLeftPos,
   gridToWorldPos,
   isValidFlatGridPos,
@@ -70,8 +73,8 @@ export class RoomData {
 
     this.roomTiles = new Map<FlatGridVector, GridEntityData>();
     const start = getTopLeftPos(this.shape);
-    const end = getBottomRightPos(this.shape);
-    const cursor = getTopLeftPos(this.shape);
+    const end = getRoomShapeBottomRightPosition(this.shape);
+    const cursor = copyVector(start);
     do {
       const flatCursor = flattenVector(cursor);
       const cursorEntity = room.GetGridEntityFromPos(gridToWorldPos(cursor));

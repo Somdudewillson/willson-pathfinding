@@ -1,25 +1,7 @@
 import { expandVector, FlatGridVector } from "./flatGridVector";
 
-/** Convert world position `Vector` to grid position. */
-export function worldToGridPos(worldPos: Vector): Vector {
-  return Vector(
-    Math.round(worldPos.X / 40 - 2),
-    Math.round(worldPos.Y / 40 - 4),
-  );
-}
-
-/** Convert world position `Vector` to grid position. */
-export function fastWorldToGridPos(worldPos: Vector): Vector {
-  return Vector(worldPos.X / 40 - 2, worldPos.Y / 40 - 4);
-}
-
-/** Convert grid position `Vector` to world position. */
-export function gridToWorldPos(gridPos: Vector): Vector {
-  return Vector((gridPos.X + 2) * 40, (gridPos.Y + 4) * 40);
-}
-
 /** Test if a grid position is actually in the given `RoomShape` */
-export function isValidGridPos(pos: Vector, shape: RoomShape): boolean {
+export function isValidGridPosition(pos: Vector, shape: RoomShape): boolean {
   if (pos.X < 0 || pos.Y < 0) {
     return false;
   }
@@ -104,9 +86,9 @@ export function isValidGridPos(pos: Vector, shape: RoomShape): boolean {
 }
 
 /** Test if a flattened grid position is actually in the given `RoomShape` */
-export function isValidFlatGridPos(
+export function isValidFlatGridPosition(
   pos: FlatGridVector,
   shape: RoomShape,
 ): boolean {
-  return isValidGridPos(expandVector(pos), shape);
+  return isValidGridPosition(expandVector(pos), shape);
 }

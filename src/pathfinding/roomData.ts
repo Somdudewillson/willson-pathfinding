@@ -2,6 +2,7 @@ import {
   copyVector,
   getRoomShapeBottomRightPosition,
   getRoomShapeTopLeftPosition,
+  gridToWorldPos,
 } from "isaacscript-common";
 import { FastMap } from "../utils/fastMap";
 import { FastSet } from "../utils/fastSet";
@@ -12,11 +13,7 @@ import {
   shiftFlat,
 } from "../utils/flatGridVector";
 import { GridEntityData } from "../utils/gridEntityData";
-import {
-  gridToWorldPos,
-  isValidFlatGridPos,
-  isValidGridPos,
-} from "../utils/utils";
+import { isValidFlatGridPosition, isValidGridPosition } from "../utils/utils";
 
 export const enum Accessibility {
   NONE = 0,
@@ -82,7 +79,7 @@ export class RoomData {
 
       // Update cursor position
       cursor.X += 1;
-      if (!isValidGridPos(cursor, this.shape)) {
+      if (!isValidGridPosition(cursor, this.shape)) {
         cursor.Y += 1;
 
         if (this.shape === RoomShape.ROOMSHAPE_LTL && cursor.Y >= 7) {
@@ -147,7 +144,7 @@ export class RoomData {
       if (RoomData.isGridDataPassable(gridEntExplored, testCollision)) {
         areaMap.set(toExplore, indexToFill);
         for (const adjPos of RoomData.getCardinalNeighbors(toExplore)) {
-          if (!isValidFlatGridPos(adjPos, this.shape)) {
+          if (!isValidFlatGridPosition(adjPos, this.shape)) {
             continue;
           }
           if (
@@ -228,7 +225,7 @@ export class RoomData {
     }
 
     for (const adjPos of RoomData.getCardinalNeighbors(tilePos)) {
-      if (!isValidFlatGridPos(adjPos, this.shape)) {
+      if (!isValidFlatGridPosition(adjPos, this.shape)) {
         continue;
       }
       const areaAtPos = areaMap.get(adjPos);
@@ -254,7 +251,7 @@ export class RoomData {
 
     const adjAreas = [];
     for (const adjPos of RoomData.getCardinalNeighbors(tilePos)) {
-      if (!isValidFlatGridPos(adjPos, this.shape)) {
+      if (!isValidFlatGridPosition(adjPos, this.shape)) {
         continue;
       }
       const areaAtPos = areaMap.get(adjPos);
@@ -283,7 +280,7 @@ export class RoomData {
   }
 
   getGridEntity(pos: FlatGridVector): GridEntity | undefined {
-    if (!isValidFlatGridPos(pos, this.shape)) {
+    if (!isValidFlatGridPosition(pos, this.shape)) {
       return undefined;
     }
 
@@ -310,7 +307,7 @@ export class RoomData {
     ) {
       return true;
     }
-    if (!isValidFlatGridPos(pos, this.shape)) {
+    if (!isValidFlatGridPosition(pos, this.shape)) {
       return false;
     }
 

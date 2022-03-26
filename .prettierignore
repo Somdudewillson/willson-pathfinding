@@ -1,5 +1,4 @@
 # Ignore all of the XML files created by Basement Renovator
-mod/content/*.xml
 mod/content/rooms/**/*.xml
 mod/content/luarooms/**/*.xml
 mod/resources/rooms/**/*.xml

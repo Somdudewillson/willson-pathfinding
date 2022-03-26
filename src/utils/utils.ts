@@ -180,6 +180,7 @@ export function fastWorldToGridPos(worldPos: Vector): Vector {
 export function gridToWorldPos(gridPos: Vector): Vector {
   return Vector((gridPos.X + 2) * 40, (gridPos.Y + 4) * 40);
 }
+
 /** Get the grid position of a `DoorSlot` in a room of the given `RoomShape` */
 export function getSlotGridPos(slot: DoorSlot, shape: RoomShape): Vector {
   switch (shape) {
@@ -552,105 +553,4 @@ export function isValidFlatGridPos(
   shape: RoomShape,
 ): boolean {
   return isValidGridPos(expandVector(pos), shape);
-}
-
-/** Get a `RoomShape`'s layout size. This is **NOT** the size of the `RoomShape`'s actual contents! */
-export function getRoomShapeSize(shape: RoomShape): Vector {
-  switch (shape) {
-    default:
-    case RoomShape.ROOMSHAPE_1x1:
-    case RoomShape.ROOMSHAPE_IH:
-    case RoomShape.ROOMSHAPE_IV:
-      return Vector(13, 7);
-    case RoomShape.ROOMSHAPE_1x2:
-    case RoomShape.ROOMSHAPE_IIV:
-      return Vector(13, 14);
-    case RoomShape.ROOMSHAPE_2x1:
-    case RoomShape.ROOMSHAPE_IIH:
-      return Vector(26, 7);
-    case RoomShape.ROOMSHAPE_2x2:
-    case RoomShape.ROOMSHAPE_LTL:
-    case RoomShape.ROOMSHAPE_LTR:
-    case RoomShape.ROOMSHAPE_LBL:
-    case RoomShape.ROOMSHAPE_LBR:
-      return Vector(26, 14);
-  }
-}
-
-/** Get the size of a `RoomShape`'s internal space. Note that this is a bounding box. */
-export function getRoomShapeBounds(shape: RoomShape): Vector {
-  switch (shape) {
-    default:
-    case RoomShape.ROOMSHAPE_1x1:
-      return Vector(13, 7);
-    case RoomShape.ROOMSHAPE_IH:
-      return Vector(13, 3);
-    case RoomShape.ROOMSHAPE_IV:
-      return Vector(5, 7);
-    case RoomShape.ROOMSHAPE_1x2:
-      return Vector(13, 14);
-    case RoomShape.ROOMSHAPE_IIV:
-      return Vector(5, 14);
-    case RoomShape.ROOMSHAPE_2x1:
-      return Vector(26, 7);
-    case RoomShape.ROOMSHAPE_IIH:
-      return Vector(26, 3);
-    case RoomShape.ROOMSHAPE_2x2:
-    case RoomShape.ROOMSHAPE_LTL:
-    case RoomShape.ROOMSHAPE_LTR:
-    case RoomShape.ROOMSHAPE_LBL:
-    case RoomShape.ROOMSHAPE_LBR:
-      return Vector(26, 14);
-  }
-}
-
-/** Get the volume of a `RoomShape`'s internal space. */
-export function getRoomShapeVolume(shape: RoomShape): int {
-  switch (shape) {
-    default:
-    case RoomShape.ROOMSHAPE_1x1:
-      return 13 * 7;
-    case RoomShape.ROOMSHAPE_IH:
-      return 13 * 3;
-    case RoomShape.ROOMSHAPE_IV:
-      return 5 * 7;
-    case RoomShape.ROOMSHAPE_1x2:
-      return 13 * 14;
-    case RoomShape.ROOMSHAPE_IIV:
-      return 5 * 14;
-    case RoomShape.ROOMSHAPE_2x1:
-      return 26 * 7;
-    case RoomShape.ROOMSHAPE_IIH:
-      return 26 * 3;
-    case RoomShape.ROOMSHAPE_2x2:
-      return 26 * 14;
-    case RoomShape.ROOMSHAPE_LTL:
-    case RoomShape.ROOMSHAPE_LTR:
-    case RoomShape.ROOMSHAPE_LBL:
-    case RoomShape.ROOMSHAPE_LBR:
-      return 26 * 7 + 13 * 7;
-  }
-}
-
-/** Get the top left pos of a given `RoomShape`. */
-export function getTopLeftPos(shape: RoomShape): Vector {
-  switch (shape) {
-    default:
-    case RoomShape.ROOMSHAPE_1x1:
-    case RoomShape.ROOMSHAPE_1x2:
-    case RoomShape.ROOMSHAPE_2x1:
-    case RoomShape.ROOMSHAPE_2x2:
-    case RoomShape.ROOMSHAPE_LTR:
-    case RoomShape.ROOMSHAPE_LBL:
-    case RoomShape.ROOMSHAPE_LBR:
-      return Vector(0, 0);
-    case RoomShape.ROOMSHAPE_IH:
-    case RoomShape.ROOMSHAPE_IIH:
-      return Vector(0, 2);
-    case RoomShape.ROOMSHAPE_IIV:
-    case RoomShape.ROOMSHAPE_IV:
-      return Vector(4, 0);
-    case RoomShape.ROOMSHAPE_LTL:
-      return Vector(13, 0);
-  }
 }

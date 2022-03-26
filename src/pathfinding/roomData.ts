@@ -1,6 +1,7 @@
 import {
   copyVector,
   getRoomShapeBottomRightPosition,
+  getRoomShapeTopLeftPosition,
 } from "isaacscript-common";
 import { FastMap } from "../utils/fastMap";
 import { FastSet } from "../utils/fastSet";
@@ -12,7 +13,6 @@ import {
 } from "../utils/flatGridVector";
 import { GridEntityData } from "../utils/gridEntityData";
 import {
-  getTopLeftPos,
   gridToWorldPos,
   isValidFlatGridPos,
   isValidGridPos,
@@ -72,7 +72,7 @@ export class RoomData {
     ];
 
     this.roomTiles = new Map<FlatGridVector, GridEntityData>();
-    const start = getTopLeftPos(this.shape);
+    const start = getRoomShapeTopLeftPosition(this.shape);
     const end = getRoomShapeBottomRightPosition(this.shape);
     const cursor = copyVector(start);
     do {
@@ -300,7 +300,7 @@ export class RoomData {
    * Does not currently fully support `GRIDCOLL_WALLS_X`, `GRIDCOLL_WALLS_Y`, or `GRIDCOLL_BULLET`.
    * @returns If the provided position is passable for the given `EntityGridCollisionClass`.
    */
-  isPosPassable(
+  isPositionPassable(
     pos: FlatGridVector,
     collisionClass: EntityGridCollisionClass,
   ): boolean {

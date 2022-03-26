@@ -114,7 +114,7 @@ export class Pathfinder {
     for (const possibleNeighbor of possibleNeighbors) {
       if (
         possibleNeighbor === goal ||
-        Pathfinder.currentRoom.isPosPassable(
+        Pathfinder.currentRoom.isPositionPassable(
           possibleNeighbor,
           this.collisionClass,
         )

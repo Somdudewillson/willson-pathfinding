@@ -1,5 +1,5 @@
+import { gridToWorldPos, worldToGridPos } from "isaacscript-common";
 import { FlatGridVector, shiftFlat } from "../utils/flatGridVector";
-import { gridToWorldPos, worldToGridPos } from "../utils/utils";
 import { findAStarPath, manhattanDist } from "./aStar";
 import { RoomData } from "./roomData";
 
@@ -38,14 +38,16 @@ export class Pathfinder {
   }
 
   public pathfind(startVec: Vector, goalVec: Vector): boolean {
-    return this.gridPathfind(worldToGridPos(startVec), worldToGridPos(goalVec));
+    const startGridPos = worldToGridPos(startVec);
+    const goalGridPos = worldToGridPos(goalVec);
+    return this.gridPathfind(startGridPos, goalGridPos);
   }
 
-  public gridPathfind(startVec: Vector, goalVec: Vector): boolean {
+  public gridPathfind(startGridPos: Vector, goalGridPos: Vector): boolean {
     if (
       !Pathfinder.currentRoom.isPathPossible(
-        startVec,
-        goalVec,
+        startGridPos,
+        goalGridPos,
         this.collisionClass,
       )
     ) {
@@ -53,8 +55,8 @@ export class Pathfinder {
     }
 
     const foundPath = findAStarPath(
-      startVec,
-      goalVec,
+      startGridPos,
+      goalGridPos,
       manhattanDist,
       this.getNeighbors.bind(this),
     );
@@ -92,7 +94,8 @@ export class Pathfinder {
     const convertedPath: Vector[] = [];
 
     for (const entry of this.currentPath) {
-      convertedPath.unshift(gridToWorldPos(entry));
+      const worldPos = gridToWorldPos(entry);
+      convertedPath.unshift(worldPos);
     }
 
     return convertedPath;

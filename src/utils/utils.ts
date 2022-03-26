@@ -1,3 +1,4 @@
+import { SymmetryType } from "../enums/SymmetryType";
 import { expandVector, FlatGridVector } from "./flatGridVector";
 
 export function rotateDirection(
@@ -54,20 +55,6 @@ export function checkLine(
   );
 
   return { clear: isClear, collidePos: endPos };
-}
-
-export const enum SymmetryType {
-  NONE,
-  /** Mirrored over a horizontal line */
-  HORIZONTAL,
-  /** Mirrored over a vertical line */
-  VERTICAL,
-  /** Both vertical and horizontal symmetry */
-  QUAD,
-  /** Diagonal top-left to bottom-right */
-  DIAGONAl_LR,
-  /** Diagonal top-right to bottom-left */
-  DIAGONAl_RL,
 }
 
 export function getMirroredPos(

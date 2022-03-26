@@ -1,41 +1,6 @@
 import { SymmetryType } from "../enums/SymmetryType";
 import { expandVector, FlatGridVector } from "./flatGridVector";
 
-export function rotateDirection(
-  dir: Direction,
-  rotateDir: Direction,
-): Direction {
-  if (dir === Direction.NO_DIRECTION) {
-    return Direction.NO_DIRECTION;
-  }
-
-  let shift = 0;
-  switch (rotateDir) {
-    default:
-    case Direction.NO_DIRECTION:
-    case Direction.UP:
-      return dir;
-    case Direction.LEFT:
-      shift = -1;
-      break;
-    case Direction.RIGHT:
-      shift = 1;
-      break;
-    case Direction.DOWN:
-      shift = -2;
-      break;
-  }
-
-  let newDir = dir + shift;
-  if (newDir < 0) {
-    newDir += 4;
-  } else if (newDir > 3) {
-    newDir -= 4;
-  }
-
-  return newDir;
-}
-
 export function checkLine(
   room: Room,
   position1: Vector,

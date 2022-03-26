@@ -102,6 +102,7 @@ export function isValidGridPos(pos: Vector, shape: RoomShape): boolean {
 
   return true;
 }
+
 /** Test if a flattened grid position is actually in the given `RoomShape` */
 export function isValidFlatGridPos(
   pos: FlatGridVector,

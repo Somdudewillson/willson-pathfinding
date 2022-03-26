@@ -11,8 +11,8 @@ const MOD_NAME = "willson-pathfinding";
 export function main(): void {
   const mod = RegisterMod(MOD_NAME, 1);
 
-  mod.AddCallback(ModCallbacks.MC_POST_UPDATE, Pathfinder.updateRoom); // 1
-  mod.AddCallback(ModCallbacks.MC_POST_RENDER, Pathfinder.debugDisplayGrid); // 2
+  mod.AddCallback(ModCallbacks.MC_POST_UPDATE, Pathfinder.postUpdate); // 1
+  mod.AddCallback(ModCallbacks.MC_POST_RENDER, Pathfinder.postRender); // 2
   mod.AddCallback(ModCallbacks.MC_POST_NEW_ROOM, Pathfinder.rebuildRoom); // 19
 
   mod.AddCallback(

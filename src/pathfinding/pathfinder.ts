@@ -18,19 +18,23 @@ export class Pathfinder {
     this.collisionClass = collisionClass;
   }
 
-  public static rebuildRoom(): void {
-    Pathfinder.currentRoom = new RoomData(Game().GetRoom());
-  }
-
-  public static updateRoom(): void {
+  // ModCallbacks.MC_POST_UPDATE (1)
+  public static postUpdate(): void {
     Pathfinder.currentRoom.incrementalUpdateAreas();
   }
 
-  public static debugDisplayGrid(): void {
+  // ModCallbacks.MC_POST_RENDER (2)
+  public static postRender(): void {
     if (Pathfinder.currentRoom === undefined) {
       return;
     }
+
     Pathfinder.currentRoom.renderDebugDisplayGrid();
+  }
+
+  // ModCallbacks.MC_POST_NEW_ROOM (19)
+  public static rebuildRoom(): void {
+    Pathfinder.currentRoom = new RoomData(Game().GetRoom());
   }
 
   public pathfind(startVec: Vector, goalVec: Vector): boolean {

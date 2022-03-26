@@ -33,7 +33,7 @@ export class Pathfinder {
   }
 
   // ModCallbacks.MC_POST_NEW_ROOM (19)
-  public static rebuildRoom(): void {
+  public static postNewRoom(): void {
     Pathfinder.currentRoom = new RoomData(Game().GetRoom());
   }
 

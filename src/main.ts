@@ -13,7 +13,7 @@ export function main(): void {
 
   mod.AddCallback(ModCallbacks.MC_POST_UPDATE, Pathfinder.postUpdate); // 1
   mod.AddCallback(ModCallbacks.MC_POST_RENDER, Pathfinder.postRender); // 2
-  mod.AddCallback(ModCallbacks.MC_POST_NEW_ROOM, Pathfinder.rebuildRoom); // 19
+  mod.AddCallback(ModCallbacks.MC_POST_NEW_ROOM, Pathfinder.postNewRoom); // 19
 
   mod.AddCallback(
     ModCallbacks.MC_POST_NPC_INIT,

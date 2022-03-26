@@ -1,13 +1,13 @@
 /* eslint-disable consistent-return */
+import { DroneVariant } from "../enums/DroneVariant";
 import { Pathfinder } from "../pathfinding/pathfinder";
 
-export const TESTDRONE_ENTITYTYPE = 18;
-export const TESTDRONE_ENTITYVARIANT = 245;
+export const TEST_DRONE_ENTITY_TYPE = EntityType.ENTITY_ATTACKFLY;
 
 const pather = new Pathfinder(EntityGridCollisionClass.GRIDCOLL_GROUND);
 
 export function testDroneUpdate(self: EntityNPC): boolean | void {
-  if (self.Variant !== TESTDRONE_ENTITYVARIANT) {
+  if (self.Variant !== DroneVariant.TEST) {
     return;
   }
 

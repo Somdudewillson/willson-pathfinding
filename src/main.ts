@@ -1,5 +1,8 @@
 import { Pathfinder } from "./pathfinding/pathfinder";
-import { testDroneUpdate, TESTDRONE_ENTITYTYPE } from "./testEntity/testDrone";
+import {
+  testDroneUpdate,
+  TEST_DRONE_ENTITY_TYPE,
+} from "./testEntity/testDrone";
 import {
   worstCaseDroneInit,
   worstCaseDroneUpdate,
@@ -17,17 +20,17 @@ export function main(): void {
   mod.AddCallback(
     ModCallbacks.MC_PRE_NPC_UPDATE,
     testDroneUpdate,
-    TESTDRONE_ENTITYTYPE,
+    TEST_DRONE_ENTITY_TYPE,
   );
   mod.AddCallback(
     ModCallbacks.MC_POST_NPC_INIT,
     worstCaseDroneInit,
-    TESTDRONE_ENTITYTYPE,
+    TEST_DRONE_ENTITY_TYPE,
   );
   mod.AddCallback(
     ModCallbacks.MC_PRE_NPC_UPDATE,
     worstCaseDroneUpdate,
-    TESTDRONE_ENTITYTYPE,
+    TEST_DRONE_ENTITY_TYPE,
   );
 
   Isaac.DebugString(`${MOD_NAME} initialized.`);

@@ -351,7 +351,7 @@ export class RoomData {
         if (gridType === GridEntityType.GRID_PIT) {
           break;
         }
-      // Falls through.
+      // Falls through
       case EntityGridCollisionClass.GRIDCOLL_BULLET:
       case EntityGridCollisionClass.GRIDCOLL_GROUND:
         if (

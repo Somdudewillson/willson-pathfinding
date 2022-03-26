@@ -4,22 +4,6 @@ export function hasFlag(flags: int, testFlag: int): boolean {
   return (flags & testFlag) === testFlag;
 }
 
-export function directionToVector(dir: Direction): Vector {
-  switch (dir) {
-    default:
-    case Direction.NO_DIRECTION:
-      return Vector.Zero;
-    case Direction.RIGHT:
-      return Vector(1, 0);
-    case Direction.DOWN:
-      return Vector(0, 1);
-    case Direction.LEFT:
-      return Vector(-1, 0);
-    case Direction.UP:
-      return Vector(0, -1);
-  }
-}
-
 export function directionToDegrees(dir: Direction): number {
   switch (dir) {
     default:

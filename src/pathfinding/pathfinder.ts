@@ -46,11 +46,14 @@ export class Pathfinder {
     return this.gridPathfind(startGridPosition, goalGridPosition);
   }
 
-  public gridPathfind(startGridPos: Vector, goalGridPos: Vector): boolean {
+  public gridPathfind(
+    startGridPosition: Vector,
+    goalGridPosition: Vector,
+  ): boolean {
     if (
       !Pathfinder.currentRoom.isPathPossible(
-        startGridPos,
-        goalGridPos,
+        startGridPosition,
+        goalGridPosition,
         this.collisionClass,
       )
     ) {
@@ -58,8 +61,8 @@ export class Pathfinder {
     }
 
     const foundPath = findAStarPath(
-      startGridPos,
-      goalGridPos,
+      startGridPosition,
+      goalGridPosition,
       manhattanDist,
       this.getNeighbors.bind(this),
     );

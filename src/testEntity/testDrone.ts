@@ -30,9 +30,9 @@ export function testDronePreNPCUpdate(self: EntityNPC): boolean | void {
     print(`${Isaac.GetTime() - startTime} ms`);
   }
 
-  const nextPos = currentPath[0];
+  const nextPosition = currentPath[0];
 
-  if (self.Position.DistanceSquared(nextPos) < 5) {
+  if (self.Position.DistanceSquared(nextPosition) < 5) {
     currentPath.shift();
     if (currentPath.length === 0) {
       data.path = undefined;
@@ -40,7 +40,7 @@ export function testDronePreNPCUpdate(self: EntityNPC): boolean | void {
     return true;
   }
 
-  const desiredVelocity = nextPos.sub(self.Position).Resized(2);
+  const desiredVelocity = nextPosition.sub(self.Position).Resized(2);
   self.AddVelocity(desiredVelocity.sub(self.Velocity));
 
   return true;

@@ -74,9 +74,8 @@ export class RoomData {
     const cursor = copyVector(start);
     do {
       const flatCursor = flattenVector(cursor);
-      const cursorEntity = room.GetGridEntityFromPos(
-        gridPositionToWorldPosition(cursor),
-      );
+      const worldPosition = gridPositionToWorldPosition(cursor);
+      const cursorEntity = room.GetGridEntityFromPos(worldPosition);
       this.roomTiles.set(flatCursor, new GridEntityData(cursorEntity));
 
       // Update cursor position
@@ -119,14 +118,14 @@ export class RoomData {
 
   private floodFillArea(
     areaMap: FastMap<FlatGridVector, number>,
-    startPos: FlatGridVector,
+    startPosition: FlatGridVector,
     testCollision: EntityGridCollisionClass,
     indexToFill: int,
     useCached = true,
   ) {
-    const unexplored: FlatGridVector[] = [startPos];
+    const unexplored: FlatGridVector[] = [startPosition];
     const unexploredSet = new FastSet<FlatGridVector>();
-    unexploredSet.add(startPos);
+    unexploredSet.add(startPosition);
     while (unexplored.length > 0) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const toExplore = unexplored.pop()!;
@@ -145,16 +144,18 @@ export class RoomData {
 
       if (RoomData.isGridDataPassable(gridEntExplored, testCollision)) {
         areaMap.set(toExplore, indexToFill);
-        for (const adjPos of RoomData.getCardinalNeighbors(toExplore)) {
-          if (!isValidFlatGridPosition(adjPos, this.shape)) {
+        for (const adjacentPosition of RoomData.getCardinalNeighbors(
+          toExplore,
+        )) {
+          if (!isValidFlatGridPosition(adjacentPosition, this.shape)) {
             continue;
           }
           if (
-            !unexploredSet.has(adjPos) &&
-            areaMap.get(adjPos) !== indexToFill
+            !unexploredSet.has(adjacentPosition) &&
+            areaMap.get(adjacentPosition) !== indexToFill
           ) {
-            unexplored.push(adjPos);
-            unexploredSet.add(adjPos);
+            unexplored.push(adjacentPosition);
+            unexploredSet.add(adjacentPosition);
           }
         }
       } else {
@@ -164,15 +165,15 @@ export class RoomData {
   }
 
   public renderDebugDisplayGrid(): void {
-    for (const tilePos of this.roomTiles.keys()) {
-      const textPos = Isaac.WorldToScreen(
-        gridPositionToWorldPosition(expandVector(tilePos)),
+    for (const tilePosition of this.roomTiles.keys()) {
+      const textPosition = Isaac.WorldToScreen(
+        gridPositionToWorldPosition(expandVector(tilePosition)),
       );
-      const area = this.groundBlockedAreas.get(tilePos);
+      const area = this.groundBlockedAreas.get(tilePosition);
       Isaac.RenderText(
         area.toString(),
-        textPos.X,
-        textPos.Y,
+        textPosition.X,
+        textPosition.Y,
         1,
         1,
         1,
@@ -218,67 +219,83 @@ export class RoomData {
     }
   }
 
-  addPassableTile(areaMapIndex: int, tilePos: FlatGridVector): void {
+  addPassableTile(areaMapIndex: int, tilePosition: FlatGridVector): void {
     const testCollision = RoomData.collisionTypes[areaMapIndex];
     const areaMap = this.areaMaps[areaMapIndex];
 
-    if (areaMap.get(tilePos) !== -1) {
+    if (areaMap.get(tilePosition) !== -1) {
       return;
     }
 
-    for (const adjPos of RoomData.getCardinalNeighbors(tilePos)) {
-      if (!isValidFlatGridPosition(adjPos, this.shape)) {
+    for (const adjacentPosition of RoomData.getCardinalNeighbors(
+      tilePosition,
+    )) {
+      if (!isValidFlatGridPosition(adjacentPosition, this.shape)) {
         continue;
       }
-      const areaAtPos = areaMap.get(adjPos);
-      if (areaAtPos === undefined || areaAtPos === -1) {
+      const areaAtPosition = areaMap.get(adjacentPosition);
+      if (areaAtPosition === undefined || areaAtPosition === -1) {
         continue;
       }
 
-      this.floodFillArea(areaMap, tilePos, testCollision, areaAtPos, false);
-      areaMap.set(tilePos, areaAtPos);
+      this.floodFillArea(
+        areaMap,
+        tilePosition,
+        testCollision,
+        areaAtPosition,
+        false,
+      );
+      areaMap.set(tilePosition, areaAtPosition);
       return;
     }
 
-    areaMap.set(tilePos, this.nextAreaIndex[areaMapIndex]++);
+    areaMap.set(tilePosition, this.nextAreaIndex[areaMapIndex]++);
   }
 
-  removePassableTile(areaMapIndex: int, tilePos: FlatGridVector): void {
+  removePassableTile(areaMapIndex: int, tilePosition: FlatGridVector): void {
     const testCollision = RoomData.collisionTypes[areaMapIndex];
     const areaMap = this.areaMaps[areaMapIndex];
 
-    if (areaMap.get(tilePos) === -1) {
+    if (areaMap.get(tilePosition) === -1) {
       return;
     }
 
-    const adjAreas = [];
-    for (const adjPos of RoomData.getCardinalNeighbors(tilePos)) {
-      if (!isValidFlatGridPosition(adjPos, this.shape)) {
+    const adjacentAreas = [];
+    for (const adjacentPosition of RoomData.getCardinalNeighbors(
+      tilePosition,
+    )) {
+      if (!isValidFlatGridPosition(adjacentPosition, this.shape)) {
         continue;
       }
-      const areaAtPos = areaMap.get(adjPos);
-      if (areaAtPos === undefined || areaAtPos === -1) {
+      const areaAtPosition = areaMap.get(adjacentPosition);
+      if (areaAtPosition === undefined || areaAtPosition === -1) {
         continue;
       }
-      adjAreas.push(adjPos);
+      adjacentAreas.push(adjacentPosition);
     }
 
-    if (adjAreas.length > 1) {
+    if (adjacentAreas.length > 1) {
       const filledAreas = new FastSet<int>();
 
-      for (const adjPos of adjAreas) {
-        const areaAtPos = areaMap.get(adjPos);
-        if (filledAreas.has(areaAtPos)) {
+      for (const adjacentPosition of adjacentAreas) {
+        const areaAtPosition = areaMap.get(adjacentPosition);
+        if (filledAreas.has(areaAtPosition)) {
           continue;
         }
 
         const fillArea = this.nextAreaIndex[areaMapIndex]++;
-        this.floodFillArea(areaMap, adjPos, testCollision, fillArea, false);
+        this.floodFillArea(
+          areaMap,
+          adjacentPosition,
+          testCollision,
+          fillArea,
+          false,
+        );
         filledAreas.add(fillArea);
       }
     }
 
-    areaMap.set(tilePos, -1);
+    areaMap.set(tilePosition, -1);
   }
 
   getGridEntity(position: FlatGridVector): GridEntity | undefined {
@@ -387,8 +404,8 @@ export class RoomData {
   }
 
   public isPathPossible(
-    startPos: Vector,
-    endPos: Vector,
+    startPosition: Vector,
+    endPosition: Vector,
     collisionClass: EntityGridCollisionClass,
   ): boolean {
     let groupMap: FastMap<FlatGridVector, number>;
@@ -411,8 +428,8 @@ export class RoomData {
         break;
     }
 
-    const startGroup = groupMap.get(flattenVector(startPos));
-    const endGroup = groupMap.get(flattenVector(endPos));
+    const startGroup = groupMap.get(flattenVector(startPosition));
+    const endGroup = groupMap.get(flattenVector(endPosition));
     return startGroup === endGroup && startGroup !== -1;
   }
 

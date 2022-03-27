@@ -1,5 +1,3 @@
-import { isValidGridPosition } from "isaacscript-common";
-
 const MIN_VALUE = -2;
 const MAX_VALUE = 29;
 const SHIFT = MAX_VALUE - MIN_VALUE + 1;
@@ -25,12 +23,4 @@ export function shiftFlat(
   deltaY: int,
 ): FlatGridVector {
   return inVec + Math.round(deltaX) + Math.round(deltaY * SHIFT);
-}
-
-/** Test if a flattened grid position is actually in the given `RoomShape` */
-export function isValidFlatGridPosition(
-  position: FlatGridVector,
-  shape: RoomShape,
-): boolean {
-  return isValidGridPosition(expandVector(position), shape);
 }

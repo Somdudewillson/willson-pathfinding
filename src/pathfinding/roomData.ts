@@ -2,8 +2,7 @@ import {
   copyVector,
   getRoomShapeBottomRightPosition,
   getRoomShapeTopLeftPosition,
-  gridPositionToWorldPosition,
-  isValidGridPosition,
+  gridToWorldPos,
 } from "isaacscript-common";
 import { FastMap } from "../utils/fastMap";
 import { FastSet } from "../utils/fastSet";
@@ -11,10 +10,10 @@ import {
   expandVector,
   FlatGridVector,
   flattenVector,
-  isValidFlatGridPosition,
   shiftFlat,
 } from "../utils/flatGridVector";
 import { GridEntityData } from "../utils/gridEntityData";
+import { isValidFlatGridPosition, isValidGridPosition } from "../utils/utils";
 
 export const enum Accessibility {
   NONE = 0,
@@ -75,8 +74,7 @@ export class RoomData {
     const cursor = copyVector(start);
     do {
       const flatCursor = flattenVector(cursor);
-      const worldPosition = gridPositionToWorldPosition(cursor);
-      const cursorEntity = room.GetGridEntityFromPos(worldPosition);
+      const cursorEntity = room.GetGridEntityFromPos(gridToWorldPos(cursor));
       this.roomTiles.set(flatCursor, new GridEntityData(cursorEntity));
 
       // Update cursor position
@@ -136,11 +134,10 @@ export class RoomData {
       if (useCached) {
         gridEntExplored = this.roomTiles.get(toExplore);
       } else {
-        const worldPosition = gridPositionToWorldPosition(
-          expandVector(toExplore),
-        );
         gridEntExplored = new GridEntityData(
-          this.sourceRoom.GetGridEntityFromPos(worldPosition),
+          this.sourceRoom.GetGridEntityFromPos(
+            gridToWorldPos(expandVector(toExplore)),
+          ),
         );
       }
 
@@ -167,7 +164,7 @@ export class RoomData {
   public renderDebugDisplayGrid(): void {
     for (const tilePos of this.roomTiles.keys()) {
       const textPos = Isaac.WorldToScreen(
-        gridPositionToWorldPosition(expandVector(tilePos)),
+        gridToWorldPos(expandVector(tilePos)),
       );
       const area = this.groundBlockedAreas.get(tilePos);
       Isaac.RenderText(
@@ -187,7 +184,7 @@ export class RoomData {
       const cachedEntity = testTile[1];
       const actualEntity = new GridEntityData(
         this.sourceRoom.GetGridEntityFromPos(
-          gridPositionToWorldPosition(expandVector(testTile[0])),
+          gridToWorldPos(expandVector(testTile[0])),
         ),
       );
 
@@ -282,26 +279,26 @@ export class RoomData {
     areaMap.set(tilePos, -1);
   }
 
-  getGridEntity(position: FlatGridVector): GridEntity | undefined {
-    if (!isValidFlatGridPosition(position, this.shape)) {
+  getGridEntity(pos: FlatGridVector): GridEntity | undefined {
+    if (!isValidFlatGridPosition(pos, this.shape)) {
       return undefined;
     }
 
     return this.sourceRoom.GetGridEntityFromPos(
-      gridPositionToWorldPosition(expandVector(position)),
+      gridToWorldPos(expandVector(pos)),
     );
   }
 
   /**
    * Checks if a given position can be passed with an entity with a given `EntityGridCollisionClass`.
    *
-   * @param position The position to check.
+   * @param pos The pos to check.
    * @param collisionClass The `EntityGridCollisionClass` to check against.
    * Does not currently fully support `GRIDCOLL_WALLS_X`, `GRIDCOLL_WALLS_Y`, or `GRIDCOLL_BULLET`.
    * @returns If the provided position is passable for the given `EntityGridCollisionClass`.
    */
   isPositionPassable(
-    position: FlatGridVector,
+    pos: FlatGridVector,
     collisionClass: EntityGridCollisionClass,
   ): boolean {
     if (
@@ -310,11 +307,11 @@ export class RoomData {
     ) {
       return true;
     }
-    if (!isValidFlatGridPosition(position, this.shape)) {
+    if (!isValidFlatGridPosition(pos, this.shape)) {
       return false;
     }
 
-    const gridEntity = this.getGridEntity(position);
+    const gridEntity = this.getGridEntity(pos);
     return RoomData.isGridEntityPassable(gridEntity, collisionClass);
   }
 
@@ -417,29 +414,25 @@ export class RoomData {
     return startGroup === endGroup && startGroup !== -1;
   }
 
-  private static getCardinalNeighbors(
-    position: FlatGridVector,
-  ): FlatGridVector[] {
+  private static getCardinalNeighbors(pos: FlatGridVector): FlatGridVector[] {
     return [
-      shiftFlat(position, -1, 0),
-      shiftFlat(position, 1, 0),
-      shiftFlat(position, 0, -1),
-      shiftFlat(position, 0, 1),
+      shiftFlat(pos, -1, 0),
+      shiftFlat(pos, 1, 0),
+      shiftFlat(pos, 0, -1),
+      shiftFlat(pos, 0, 1),
     ];
   }
 
-  private static getChessboardNeighbors(
-    position: FlatGridVector,
-  ): FlatGridVector[] {
+  private static getChessboardNeighbors(pos: FlatGridVector): FlatGridVector[] {
     return [
-      shiftFlat(position, -1, 0),
-      shiftFlat(position, 1, 0),
-      shiftFlat(position, 0, -1),
-      shiftFlat(position, 0, 1),
-      shiftFlat(position, -1, -1),
-      shiftFlat(position, -1, 1),
-      shiftFlat(position, 1, -1),
-      shiftFlat(position, 1, 1),
+      shiftFlat(pos, -1, 0),
+      shiftFlat(pos, 1, 0),
+      shiftFlat(pos, 0, -1),
+      shiftFlat(pos, 0, 1),
+      shiftFlat(pos, -1, -1),
+      shiftFlat(pos, -1, 1),
+      shiftFlat(pos, 1, -1),
+      shiftFlat(pos, 1, 1),
     ];
   }
 }

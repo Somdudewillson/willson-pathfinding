@@ -1,4 +1,4 @@
-import { isValidGridPosition } from "./utils";
+import { isValidGridPosition } from "isaacscript-common";
 
 const MIN_VALUE = -2;
 const MAX_VALUE = 29;

@@ -3,6 +3,7 @@ import {
   getRoomShapeBottomRightPosition,
   getRoomShapeTopLeftPosition,
   gridPositionToWorldPosition,
+  isValidGridPosition,
 } from "isaacscript-common";
 import { FastMap } from "../utils/fastMap";
 import { FastSet } from "../utils/fastSet";
@@ -14,7 +15,6 @@ import {
   shiftFlat,
 } from "../utils/flatGridVector";
 import { GridEntityData } from "../utils/gridEntityData";
-import { isValidGridPosition } from "../utils/utils";
 
 export const enum Accessibility {
   NONE = 0,

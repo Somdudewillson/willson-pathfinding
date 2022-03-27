@@ -1,6 +1,7 @@
 import { log } from "isaacscript-common";
 import { EntityTypeCustom } from "./enums/EntityTypeCustom";
 import { Pathfinder } from "./pathfinding/pathfinder";
+import { testExecuteCmd } from "./test";
 import { testDronePreNPCUpdate } from "./testEntity/testDrone";
 import {
   worstCaseDronePostNPCInit,
@@ -21,6 +22,7 @@ function registerCallbacks(mod: Mod) {
   mod.AddCallback(ModCallbacks.MC_POST_UPDATE, Pathfinder.postUpdate); // 1
   mod.AddCallback(ModCallbacks.MC_POST_RENDER, Pathfinder.postRender); // 2
   mod.AddCallback(ModCallbacks.MC_POST_NEW_ROOM, Pathfinder.postNewRoom); // 19
+  mod.AddCallback(ModCallbacks.MC_EXECUTE_CMD, testExecuteCmd); // 19
 
   mod.AddCallback(
     ModCallbacks.MC_POST_NPC_INIT,

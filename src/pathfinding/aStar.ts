@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { FastMap } from "../utils/fastMap";
 import {
   expandVector,
   FlatGridVector,
@@ -8,7 +7,7 @@ import {
 import { MinPriorityQueue } from "../utils/priorityQueue";
 
 function reconstructPath(
-  cameFrom: FastMap<FlatGridVector, FlatGridVector>,
+  cameFrom: LuaTable<FlatGridVector, FlatGridVector>,
   current: FlatGridVector,
 ): Vector[] {
   const fullPath = [expandVector(current)];
@@ -51,15 +50,15 @@ export function findAStarPath(
 
   // For node n, cameFrom[n] is the node immediately preceding it on the cheapest path from start
   // to n currently known.
-  const cameFrom = new FastMap<FlatGridVector, FlatGridVector>();
+  const cameFrom = new LuaTable<FlatGridVector, FlatGridVector>();
 
   // For node n, gScore[n] is the cost of the cheapest path from start to n currently known.
-  const gScore = new FastMap<FlatGridVector, number>();
+  const gScore = new LuaTable<FlatGridVector, number>();
   gScore.set(start, 0);
 
   // For node n, fScore[n] := gScore[n] + h(n). fScore[n] represents our current best guess as to
   // how short a path from start to finish can be if it goes through n.
-  const fScore = new FastMap<FlatGridVector, number>();
+  const fScore = new LuaTable<FlatGridVector, number>();
   fScore.set(start, epsilon * heuristic(startVec, goalVec));
   openSet.insert(start, fScore.get(start)!);
 

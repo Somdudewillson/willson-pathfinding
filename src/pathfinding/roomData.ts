@@ -5,8 +5,6 @@ import {
   gridPositionToWorldPosition,
   isValidGridPosition,
 } from "isaacscript-common";
-import { FastMap } from "../utils/fastMap";
-import { FastSet } from "../utils/fastSet";
 import {
   expandVector,
   FlatGridVector,
@@ -26,10 +24,10 @@ export class RoomData {
   readonly shape: RoomShape;
   readonly sourceRoom: Room;
 
-  private wallBlockedAreas = new FastMap<FlatGridVector, number>();
-  private pitBlockedAreas = new FastMap<FlatGridVector, number>();
-  private groundBlockedAreas = new FastMap<FlatGridVector, number>();
-  private pitAreas = new FastMap<FlatGridVector, number>();
+  private wallBlockedAreas = new LuaTable<FlatGridVector, number>();
+  private pitBlockedAreas = new LuaTable<FlatGridVector, number>();
+  private groundBlockedAreas = new LuaTable<FlatGridVector, number>();
+  private pitAreas = new LuaTable<FlatGridVector, number>();
 
   private roomTiles = new Map<FlatGridVector, GridEntityData>();
 
@@ -57,10 +55,10 @@ export class RoomData {
   }
 
   private fullUpdateAreas(room: Room): void {
-    this.wallBlockedAreas = new FastMap<FlatGridVector, number>();
-    this.pitBlockedAreas = new FastMap<FlatGridVector, number>();
-    this.groundBlockedAreas = new FastMap<FlatGridVector, number>();
-    this.pitAreas = new FastMap<FlatGridVector, number>();
+    this.wallBlockedAreas = new LuaTable<FlatGridVector, number>();
+    this.pitBlockedAreas = new LuaTable<FlatGridVector, number>();
+    this.groundBlockedAreas = new LuaTable<FlatGridVector, number>();
+    this.pitAreas = new LuaTable<FlatGridVector, number>();
 
     this.areaMaps = [
       this.wallBlockedAreas,
@@ -118,15 +116,15 @@ export class RoomData {
   }
 
   private floodFillArea(
-    areaMap: FastMap<FlatGridVector, number>,
+    areaMap: LuaTable<FlatGridVector, number>,
     startPosition: FlatGridVector,
     testCollision: EntityGridCollisionClass,
     indexToFill: int,
     useCached = true,
   ) {
     const unexplored: FlatGridVector[] = [startPosition];
-    const unexploredSet = new FastSet<FlatGridVector>();
-    unexploredSet.add(startPosition);
+    const unexploredSet = new LuaTable<FlatGridVector, boolean>();
+    unexploredSet.set(startPosition, true);
     while (unexplored.length > 0) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const toExplore = unexplored.pop()!;
@@ -156,7 +154,7 @@ export class RoomData {
             areaMap.get(adjacentPosition) !== indexToFill
           ) {
             unexplored.push(adjacentPosition);
-            unexploredSet.add(adjacentPosition);
+            unexploredSet.set(adjacentPosition, true);
           }
         }
       } else {
@@ -261,7 +259,7 @@ export class RoomData {
       return;
     }
 
-    const adjacentAreas = [];
+    const adjacentAreas: int[] = [];
     for (const adjacentPosition of RoomData.getCardinalNeighbors(
       tilePosition,
     )) {
@@ -276,7 +274,7 @@ export class RoomData {
     }
 
     if (adjacentAreas.length > 1) {
-      const filledAreas = new FastSet<int>();
+      const filledAreas = new LuaTable<int, boolean>();
 
       for (const adjacentPosition of adjacentAreas) {
         const areaAtPosition = areaMap.get(adjacentPosition);
@@ -292,7 +290,7 @@ export class RoomData {
           fillArea,
           false,
         );
-        filledAreas.add(fillArea);
+        filledAreas.set(fillArea, true);
       }
     }
 
@@ -409,7 +407,7 @@ export class RoomData {
     endPosition: Vector,
     collisionClass: EntityGridCollisionClass,
   ): boolean {
-    let groupMap: FastMap<FlatGridVector, number>;
+    let groupMap: LuaTable<FlatGridVector, number>;
     switch (collisionClass) {
       default:
       case EntityGridCollisionClass.GRIDCOLL_WALLS_X:

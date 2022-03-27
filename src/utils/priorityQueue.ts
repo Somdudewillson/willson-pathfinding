@@ -1,5 +1,3 @@
-import { FastSet } from "./fastSet";
-
 interface Node<T> {
   priority: number;
   value: T;
@@ -10,7 +8,7 @@ interface Node<T> {
  */
 export class MinPriorityQueue<T> {
   heap: Array<Node<T>> = [];
-  heapSet = new FastSet<T>();
+  heapSet = new LuaTable<T, boolean>();
 
   // -----Tree Navigation Methods-----
   private static parent(index: int): int {
@@ -58,7 +56,7 @@ export class MinPriorityQueue<T> {
 
   insert(item: T, itemPriority: number): void {
     this.heap.push({ priority: itemPriority, value: item });
-    this.heapSet.add(item);
+    this.heapSet.set(item, true);
 
     let curIndex = this.size() - 1;
     while (curIndex > 0) {

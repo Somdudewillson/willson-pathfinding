@@ -1,3 +1,4 @@
+import { log } from "isaacscript-common";
 import { EntityTypeCustom } from "./enums/EntityTypeCustom";
 import { Pathfinder } from "./pathfinding/pathfinder";
 import { testDronePreNPCUpdate } from "./testEntity/testDrone";
@@ -8,9 +9,15 @@ import {
 
 const MOD_NAME = "willson-pathfinding";
 
-export function main(): void {
-  const mod = RegisterMod(MOD_NAME, 1);
+main();
 
+function main() {
+  const mod = RegisterMod(MOD_NAME, 1);
+  registerCallbacks(mod);
+  log(`${MOD_NAME} initialized.`);
+}
+
+function registerCallbacks(mod: Mod) {
   mod.AddCallback(ModCallbacks.MC_POST_UPDATE, Pathfinder.postUpdate); // 1
   mod.AddCallback(ModCallbacks.MC_POST_RENDER, Pathfinder.postRender); // 2
   mod.AddCallback(ModCallbacks.MC_POST_NEW_ROOM, Pathfinder.postNewRoom); // 19
@@ -30,6 +37,4 @@ export function main(): void {
     worstCaseDronePreNPCUpdate,
     EntityTypeCustom.DRONE,
   ); // 69
-
-  Isaac.DebugString(`${MOD_NAME} initialized.`);
 }

@@ -7,10 +7,13 @@ interface Node<T> {
  * Priority queue implementation based on a min-heap.
  */
 export class MinPriorityQueue<T> {
-  heap: Array<Node<T>> = [];
-  heapSet = new LuaTable<T, boolean>();
+  private heap: Array<Node<T>> = [];
+  private heapSet = new LuaTable<T, boolean>();
 
-  // -----Tree Navigation Methods-----
+  // -----------------------
+  // Tree navigation methods
+  // -----------------------
+
   private static parent(index: int): int {
     return Math.floor((index - 1) / 2);
   }
@@ -37,7 +40,10 @@ export class MinPriorityQueue<T> {
     this.heap[b] = tmp;
   }
 
-  // -----External methods-----
+  // ----------------
+  // External methods
+  // ----------------
+
   isEmpty(): boolean {
     return this.heap.length === 0;
   }

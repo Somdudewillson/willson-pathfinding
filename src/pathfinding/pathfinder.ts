@@ -1,4 +1,5 @@
 import {
+  game,
   gridPositionToWorldPosition,
   worldPositionToGridPosition,
 } from "isaacscript-common";
@@ -37,7 +38,8 @@ export class Pathfinder {
 
   // ModCallbacks.MC_POST_NEW_ROOM (19)
   public static postNewRoom(): void {
-    Pathfinder.currentRoom = new RoomData(Game().GetRoom());
+    const room = game.GetRoom();
+    Pathfinder.currentRoom = new RoomData(room);
   }
 
   public pathfind(startVec: Vector, goalVec: Vector): boolean {

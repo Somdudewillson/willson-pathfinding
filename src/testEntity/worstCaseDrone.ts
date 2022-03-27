@@ -1,3 +1,4 @@
+import { game } from "isaacscript-common";
 import { DroneVariant } from "../enums/DroneVariant";
 import { Pathfinder } from "../pathfinding/pathfinder";
 
@@ -9,9 +10,10 @@ export function worstCaseDronePostNPCInit(self: EntityNPC): void {
     return;
   }
 
-  const room = Game().GetRoom();
-  room.SpawnGridEntity(17, GridEntityType.GRID_ROCK, 0, room.GetSpawnSeed(), 0);
-  room.SpawnGridEntity(31, GridEntityType.GRID_ROCK, 0, room.GetSpawnSeed(), 0);
+  const room = game.GetRoom();
+  const roomSeed = room.GetSpawnSeed();
+  room.SpawnGridEntity(17, GridEntityType.GRID_ROCK, 0, roomSeed, 0);
+  room.SpawnGridEntity(31, GridEntityType.GRID_ROCK, 0, roomSeed, 0);
 
   self.Position = room.GetGridPosition(118);
 }
@@ -22,7 +24,8 @@ export function worstCaseDronePreNPCUpdate(self: EntityNPC): boolean | void {
     return undefined;
   }
 
-  const goal = Game().GetRoom().GetGridPosition(16);
+  const room = game.GetRoom();
+  const goal = room.GetGridPosition(16);
 
   const startTime = Isaac.GetTime();
   pather.pathfind(self.Position, goal);

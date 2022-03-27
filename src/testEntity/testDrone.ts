@@ -1,3 +1,4 @@
+import { game } from "isaacscript-common";
 import { DroneVariant } from "../enums/DroneVariant";
 import { Pathfinder } from "../pathfinding/pathfinder";
 
@@ -12,9 +13,9 @@ export function testDronePreNPCUpdate(self: EntityNPC): boolean | void {
   const data = self.GetData();
   let currentPath = data.path as Vector[] | undefined;
   if (currentPath === undefined) {
-    const goal = Game()
-      .GetRoom()
-      .FindFreePickupSpawnPosition(Isaac.GetRandomPosition());
+    const room = game.GetRoom();
+    const randomPosition = Isaac.GetRandomPosition();
+    const goal = room.FindFreePickupSpawnPosition(randomPosition);
     if (goal.DistanceSquared(self.Position) < 1) {
       return true;
     }

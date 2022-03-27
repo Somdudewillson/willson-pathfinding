@@ -3,9 +3,7 @@ interface Node<T> {
   value: T;
 }
 
-/**
- * Priority queue implementation based on a min-heap.
- */
+/** Priority queue implementation based on a min-heap. */
 export class MinPriorityQueue<T> {
   private heap: Array<Node<T>> = [];
   private heapSet = new LuaTable<T, boolean>();
@@ -77,11 +75,13 @@ export class MinPriorityQueue<T> {
   }
 
   pop(): T | undefined {
-    if (this.isEmpty()) return undefined;
+    if (this.isEmpty()) {
+      return undefined;
+    }
 
     this.swap(0, this.heap.length - 1);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const item = this.heap.pop()!;
+    const item = this.heap.pop()!; // We checked for "isEmpty" above
     this.heapSet.delete(item.value);
 
     let current = 0;

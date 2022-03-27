@@ -190,7 +190,7 @@ export class RoomData {
         ),
       );
 
-      if (cachedEntity.sameAs(actualEntity)) {
+      if (cachedEntity.equals(actualEntity)) {
         continue;
       }
 

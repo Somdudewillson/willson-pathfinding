@@ -23,11 +23,11 @@ export class GridEntityData {
     return `${this.type}.${this.variant}:${this.state}`;
   }
 
-  public static areIdentical(a: GridEntityData, b: GridEntityData): boolean {
-    return a.type === b.type && a.variant === b.variant && a.state === b.state;
-  }
-
-  public sameAs(other: GridEntityData): boolean {
-    return GridEntityData.areIdentical(this, other);
+  public equals(other: GridEntityData): boolean {
+    return (
+      this.type === other.type &&
+      this.variant === other.variant &&
+      this.state === other.state
+    );
   }
 }

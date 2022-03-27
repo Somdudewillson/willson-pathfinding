@@ -10,10 +10,11 @@ import {
   expandVector,
   FlatGridVector,
   flattenVector,
+  isValidFlatGridPosition,
   shiftFlat,
 } from "../utils/flatGridVector";
 import { GridEntityData } from "../utils/gridEntityData";
-import { isValidFlatGridPosition, isValidGridPosition } from "../utils/utils";
+import { isValidGridPosition } from "../utils/utils";
 
 export const enum Accessibility {
   NONE = 0,

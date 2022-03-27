@@ -1,5 +1,3 @@
-import { expandVector, FlatGridVector } from "./flatGridVector";
-
 /** Test if a grid position is actually in the given `RoomShape` */
 export function isValidGridPosition(
   position: Vector,
@@ -86,12 +84,4 @@ export function isValidGridPosition(
   }
 
   return true;
-}
-
-/** Test if a flattened grid position is actually in the given `RoomShape` */
-export function isValidFlatGridPosition(
-  position: FlatGridVector,
-  shape: RoomShape,
-): boolean {
-  return isValidGridPosition(expandVector(position), shape);
 }

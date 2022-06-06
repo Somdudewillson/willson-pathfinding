@@ -1,11 +1,13 @@
+import { GridEntityType } from "isaac-typescript-definitions";
+
 export class GridEntityData {
-  readonly type: int;
+  readonly type: GridEntityType;
   readonly variant: int;
   readonly state: int;
 
   public constructor(source: GridEntity | undefined) {
     if (source === undefined) {
-      this.type = -1;
+      this.type = GridEntityType.NULL;
       this.variant = -1;
       this.state = -1;
     } else {
@@ -16,7 +18,11 @@ export class GridEntityData {
   }
 
   public isUndefined(): boolean {
-    return this.type === -1 && this.variant === -1 && this.state === -1;
+    return (
+      this.type === GridEntityType.NULL &&
+      this.variant === -1 &&
+      this.state === -1
+    );
   }
 
   public toString(): string {

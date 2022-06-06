@@ -134,7 +134,6 @@ export class RoomData {
     const unexploredSet = new LuaTable<FlatGridVector, boolean>();
     unexploredSet.set(startPosition, true);
     while (unexplored.length > 0) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const toExplore = unexplored.pop()!;
       unexploredSet.delete(toExplore);
 

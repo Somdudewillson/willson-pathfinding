@@ -82,14 +82,16 @@ export class Pathfinder {
   }
 
   /**
-   * @returns the next position along the path.
+   * @returns The next position along the path.
    */
   public peekPath(): Vector | undefined {
     return this.hasPath() ? this.currentPath[0] : undefined;
   }
 
   /**
-   * @returns and removes the next position along the path.
+   * Returns and removes the next position along the path.
+   *
+   * @returns The next position along the path.
    */
   public pollPath(): Vector | undefined {
     return this.hasPath() ? this.currentPath[0] : undefined;

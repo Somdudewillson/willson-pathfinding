@@ -18,9 +18,9 @@ module.exports = {
   // order)
   rules: {
     // Insert changed or disabled rules here, if necessary
-    "no-plusplus": false,
-    "no-non-null-assertion": false,
-    "default-case-last": false,
+    "no-plusplus": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "default-case-last": "off",
     "@typescript-eslint/unbound-method": [
       "error",
       {

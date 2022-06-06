@@ -6,5 +6,5 @@ export function testExecuteCmd(cmd: string, _params: string): void {
 }
 
 function test() {
-  // Insert benchmarking code here
+  // Insert benchmarking code here.
 }

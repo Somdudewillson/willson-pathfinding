@@ -35,7 +35,7 @@ export function testDronePreNPCUpdate(self: EntityNPC): boolean | void {
   const nextPosition = currentPath[0];
 
   if (
-    nextPosition == undefined ||
+    nextPosition === undefined ||
     self.Position.DistanceSquared(nextPosition) < 5
   ) {
     currentPath.shift();

@@ -33,8 +33,8 @@ export class MinPriorityQueue<T> {
   }
 
   private swap(a: int, b: int): void {
-    const tmp = this.heap[a];
-    this.heap[a] = this.heap[b];
+    const tmp = this.heap[a]!;
+    this.heap[a] = this.heap[b]!;
     this.heap[b] = tmp;
   }
 
@@ -47,7 +47,7 @@ export class MinPriorityQueue<T> {
   }
 
   peek(): undefined | T {
-    return this.isEmpty() ? undefined : this.heap[0].value;
+    return this.isEmpty() ? undefined : this.heap[0]!.value;
   }
 
   size(): int {
@@ -65,7 +65,7 @@ export class MinPriorityQueue<T> {
     let curIndex = this.size() - 1;
     while (curIndex > 0) {
       const parentIndex = MinPriorityQueue.parent(curIndex);
-      if (this.heap[parentIndex].priority <= this.heap[curIndex].priority) {
+      if (this.heap[parentIndex]!.priority <= this.heap[curIndex]!.priority) {
         break;
       }
 
@@ -89,13 +89,13 @@ export class MinPriorityQueue<T> {
       let smallerChild = MinPriorityQueue.left(current);
       if (
         this.hasRight(current) &&
-        this.heap[MinPriorityQueue.right(current)].priority <
-          this.heap[smallerChild].priority
+        this.heap[MinPriorityQueue.right(current)]!.priority <
+          this.heap[smallerChild]!.priority
       ) {
         smallerChild = MinPriorityQueue.right(current);
       }
 
-      if (this.heap[smallerChild].priority > this.heap[current].priority) {
+      if (this.heap[smallerChild]!.priority > this.heap[current]!.priority) {
         break;
       }
 

@@ -1,3 +1,4 @@
+import { EntityGridCollisionClass } from "isaac-typescript-definitions";
 import {
   game,
   gridPositionToWorldPosition,

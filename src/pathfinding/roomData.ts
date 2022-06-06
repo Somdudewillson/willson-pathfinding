@@ -1,4 +1,12 @@
 import {
+  EntityGridCollisionClass,
+  GridEntityType,
+  PoopState,
+  RockState,
+  RoomShape,
+  TNTState,
+} from "isaac-typescript-definitions";
+import {
   copyVector,
   getRoomShapeBottomRightPosition,
   getRoomShapeTopLeftPosition,
@@ -32,10 +40,10 @@ export class RoomData {
   private roomTiles = new Map<FlatGridVector, GridEntityData>();
 
   private static readonly collisionTypes = [
-    EntityGridCollisionClass.GRIDCOLL_WALLS,
-    EntityGridCollisionClass.GRIDCOLL_NOPITS,
-    EntityGridCollisionClass.GRIDCOLL_GROUND,
-    EntityGridCollisionClass.GRIDCOLL_PITSONLY,
+    EntityGridCollisionClass.WALLS,
+    EntityGridCollisionClass.NO_PITS,
+    EntityGridCollisionClass.GROUND,
+    EntityGridCollisionClass.PITS_ONLY,
   ];
 
   private areaMaps = [
@@ -82,9 +90,9 @@ export class RoomData {
       if (!isValidGridPosition(cursor, this.shape)) {
         cursor.Y += 1;
 
-        if (this.shape === RoomShape.ROOMSHAPE_LTL && cursor.Y >= 7) {
+        if (this.shape === RoomShape.LTL && cursor.Y >= 7) {
           cursor.X = 0;
-        } else if (this.shape === RoomShape.ROOMSHAPE_LBL && cursor.Y >= 7) {
+        } else if (this.shape === RoomShape.LBL && cursor.Y >= 7) {
           cursor.X = 13;
         } else {
           cursor.X = start.X;
@@ -95,18 +103,18 @@ export class RoomData {
     // Flood fill everything
     for (const i of $range(0, 3)) {
       for (const tileEntry of this.roomTiles.entries()) {
-        const testCollision = RoomData.collisionTypes[i];
-        if (this.areaMaps[i].has(tileEntry[0])) {
+        const testCollision = RoomData.collisionTypes[i]!;
+        if (this.areaMaps[i]!.has(tileEntry[0])) {
           continue;
         }
         if (!RoomData.isGridDataPassable(tileEntry[1], testCollision)) {
-          this.areaMaps[i].set(tileEntry[0], -1);
+          this.areaMaps[i]!.set(tileEntry[0], -1);
           continue;
         }
 
         const areaIndex = this.nextAreaIndex[i]++;
         this.floodFillArea(
-          this.areaMaps[i],
+          this.areaMaps[i]!,
           tileEntry[0],
           testCollision,
           areaIndex,
@@ -195,7 +203,7 @@ export class RoomData {
       }
 
       for (const i of $range(0, 3)) {
-        const testCollision = RoomData.collisionTypes[i];
+        const testCollision = RoomData.collisionTypes[i]!;
         const isNowPassable = RoomData.isGridDataPassable(
           actualEntity,
           testCollision,
@@ -219,8 +227,8 @@ export class RoomData {
   }
 
   addPassableTile(areaMapIndex: int, tilePosition: FlatGridVector): void {
-    const testCollision = RoomData.collisionTypes[areaMapIndex];
-    const areaMap = this.areaMaps[areaMapIndex];
+    const testCollision = RoomData.collisionTypes[areaMapIndex]!;
+    const areaMap = this.areaMaps[areaMapIndex]!;
 
     if (areaMap.get(tilePosition) !== -1) {
       return;
@@ -252,8 +260,8 @@ export class RoomData {
   }
 
   removePassableTile(areaMapIndex: int, tilePosition: FlatGridVector): void {
-    const testCollision = RoomData.collisionTypes[areaMapIndex];
-    const areaMap = this.areaMaps[areaMapIndex];
+    const testCollision = RoomData.collisionTypes[areaMapIndex]!;
+    const areaMap = this.areaMaps[areaMapIndex]!;
 
     if (areaMap.get(tilePosition) === -1) {
       return;
@@ -308,11 +316,12 @@ export class RoomData {
   }
 
   /**
-   * Checks if a given position can be passed with an entity with a given `EntityGridCollisionClass`.
+   * Checks if a given position can be passed with an entity with a given
+   * `EntityGridCollisionClass`.
    *
    * @param position The position to check.
-   * @param collisionClass The `EntityGridCollisionClass` to check against.
-   * Does not currently fully support `GRIDCOLL_WALLS_X`, `GRIDCOLL_WALLS_Y`, or `GRIDCOLL_BULLET`.
+   * @param collisionClass The `EntityGridCollisionClass` to check against. Does not currently fully
+   *                       support `GRIDCOLL_WALLS_X`, `GRIDCOLL_WALLS_Y`, or `GRIDCOLL_BULLET`.
    * @returns If the provided position is passable for the given `EntityGridCollisionClass`.
    */
   isPositionPassable(
@@ -321,7 +330,7 @@ export class RoomData {
   ): boolean {
     if (
       collisionClass === undefined ||
-      collisionClass === EntityGridCollisionClass.GRIDCOLL_NONE
+      collisionClass === EntityGridCollisionClass.NONE
     ) {
       return true;
     }
@@ -348,55 +357,55 @@ export class RoomData {
     collisionClass: EntityGridCollisionClass,
   ): boolean {
     if (gridEntity === undefined || gridEntity.isUndefined()) {
-      return collisionClass !== EntityGridCollisionClass.GRIDCOLL_PITSONLY;
+      return collisionClass !== EntityGridCollisionClass.PITS_ONLY;
     }
     const gridType = gridEntity.type;
 
     switch (collisionClass) {
       default:
-      case EntityGridCollisionClass.GRIDCOLL_WALLS_X:
-      case EntityGridCollisionClass.GRIDCOLL_WALLS_Y:
-      case EntityGridCollisionClass.GRIDCOLL_WALLS:
+      case EntityGridCollisionClass.WALLS_X:
+      case EntityGridCollisionClass.WALLS_Y:
+      case EntityGridCollisionClass.WALLS:
         if (
-          gridType === GridEntityType.GRID_WALL ||
-          gridType === GridEntityType.GRID_PILLAR ||
-          gridType === GridEntityType.GRID_DOOR
+          gridType === GridEntityType.WALL ||
+          gridType === GridEntityType.PILLAR ||
+          gridType === GridEntityType.DOOR
         ) {
           return false;
         }
         break;
-      case EntityGridCollisionClass.GRIDCOLL_NOPITS:
-        if (gridType === GridEntityType.GRID_PIT) {
+      case EntityGridCollisionClass.NO_PITS:
+        if (gridType === GridEntityType.PIT) {
           break;
         }
       // Falls through
-      case EntityGridCollisionClass.GRIDCOLL_BULLET:
-      case EntityGridCollisionClass.GRIDCOLL_GROUND:
+      case EntityGridCollisionClass.BULLET:
+      case EntityGridCollisionClass.GROUND:
         if (
-          gridType === GridEntityType.GRID_DECORATION ||
-          gridType === GridEntityType.GRID_GRAVITY ||
-          gridType === GridEntityType.GRID_PRESSURE_PLATE ||
-          gridType === GridEntityType.GRID_SPIDERWEB ||
-          gridType === GridEntityType.GRID_TRAPDOOR ||
-          ((gridType === GridEntityType.GRID_ROCK ||
-            gridType === GridEntityType.GRID_ROCK_ALT ||
-            gridType === GridEntityType.GRID_ROCK_ALT2 ||
-            gridType === GridEntityType.GRID_ROCK_SPIKED ||
-            gridType === GridEntityType.GRID_ROCK_SS ||
-            gridType === GridEntityType.GRID_ROCKT ||
-            gridType === GridEntityType.GRID_ROCK_BOMB) &&
+          gridType === GridEntityType.DECORATION ||
+          gridType === GridEntityType.GRAVITY ||
+          gridType === GridEntityType.PRESSURE_PLATE ||
+          gridType === GridEntityType.SPIDER_WEB ||
+          gridType === GridEntityType.TRAPDOOR ||
+          ((gridType === GridEntityType.ROCK ||
+            gridType === GridEntityType.ROCK_ALT ||
+            gridType === GridEntityType.ROCK_ALT_2 ||
+            gridType === GridEntityType.ROCK_SPIKED ||
+            gridType === GridEntityType.ROCK_SUPER_SPECIAL ||
+            gridType === GridEntityType.ROCK_TINTED ||
+            gridType === GridEntityType.ROCK_BOMB) &&
             gridEntity.state !== RockState.UNBROKEN) ||
-          (gridType === GridEntityType.GRID_POOP &&
+          (gridType === GridEntityType.POOP &&
             gridEntity.state === PoopState.COMPLETELY_DESTROYED) ||
-          (gridType === GridEntityType.GRID_PIT && gridEntity.state === 1) ||
-          (gridType === GridEntityType.GRID_TNT &&
+          (gridType === GridEntityType.PIT && gridEntity.state === 1) ||
+          (gridType === GridEntityType.TNT &&
             gridEntity.state === TNTState.EXPLODED)
         ) {
           break;
         }
         return false;
-      case EntityGridCollisionClass.GRIDCOLL_PITSONLY:
-        return gridType === GridEntityType.GRID_PIT && gridEntity.state === 0;
+      case EntityGridCollisionClass.PITS_ONLY:
+        return gridType === GridEntityType.PIT && gridEntity.state === 0;
     }
 
     return true;
@@ -410,19 +419,19 @@ export class RoomData {
     let groupMap: LuaTable<FlatGridVector, number>;
     switch (collisionClass) {
       default:
-      case EntityGridCollisionClass.GRIDCOLL_WALLS_X:
-      case EntityGridCollisionClass.GRIDCOLL_WALLS_Y:
-      case EntityGridCollisionClass.GRIDCOLL_WALLS:
+      case EntityGridCollisionClass.WALLS_X:
+      case EntityGridCollisionClass.WALLS_Y:
+      case EntityGridCollisionClass.WALLS:
         groupMap = this.wallBlockedAreas;
         break;
-      case EntityGridCollisionClass.GRIDCOLL_NOPITS:
+      case EntityGridCollisionClass.NO_PITS:
         groupMap = this.pitBlockedAreas;
         break;
-      case EntityGridCollisionClass.GRIDCOLL_BULLET:
-      case EntityGridCollisionClass.GRIDCOLL_GROUND:
+      case EntityGridCollisionClass.BULLET:
+      case EntityGridCollisionClass.GROUND:
         groupMap = this.groundBlockedAreas;
         break;
-      case EntityGridCollisionClass.GRIDCOLL_PITSONLY:
+      case EntityGridCollisionClass.PITS_ONLY:
         groupMap = this.pitAreas;
         break;
     }

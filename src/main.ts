@@ -1,5 +1,6 @@
+import { ModCallback } from "isaac-typescript-definitions";
 import { log } from "isaacscript-common";
-import { EntityTypeCustom } from "./enums/EntityTypeCustom";
+import { DRONE_TYPE } from "./enums/EntityTypeCustom";
 import { Pathfinder } from "./pathfinding/pathfinder";
 import { testExecuteCmd } from "./test";
 import { testDronePreNPCUpdate } from "./testEntity/testDrone";
@@ -19,24 +20,24 @@ function main() {
 }
 
 function registerCallbacks(mod: Mod) {
-  mod.AddCallback(ModCallbacks.MC_POST_UPDATE, Pathfinder.postUpdate); // 1
-  mod.AddCallback(ModCallbacks.MC_POST_RENDER, Pathfinder.postRender); // 2
-  mod.AddCallback(ModCallbacks.MC_POST_NEW_ROOM, Pathfinder.postNewRoom); // 19
-  mod.AddCallback(ModCallbacks.MC_EXECUTE_CMD, testExecuteCmd); // 19
+  mod.AddCallback(ModCallback.POST_UPDATE, Pathfinder.postUpdate); // 1
+  mod.AddCallback(ModCallback.POST_RENDER, Pathfinder.postRender); // 2
+  mod.AddCallback(ModCallback.POST_NEW_ROOM, Pathfinder.postNewRoom); // 19
+  mod.AddCallback(ModCallback.EXECUTE_CMD, testExecuteCmd); // 19
 
   mod.AddCallback(
-    ModCallbacks.MC_POST_NPC_INIT,
+    ModCallback.POST_NPC_INIT,
     worstCaseDronePostNPCInit,
-    EntityTypeCustom.DRONE,
+    DRONE_TYPE,
   ); // 27
   mod.AddCallback(
-    ModCallbacks.MC_PRE_NPC_UPDATE,
+    ModCallback.PRE_NPC_UPDATE,
     testDronePreNPCUpdate,
-    EntityTypeCustom.DRONE,
+    DRONE_TYPE,
   ); // 69
   mod.AddCallback(
-    ModCallbacks.MC_PRE_NPC_UPDATE,
+    ModCallback.PRE_NPC_UPDATE,
     worstCaseDronePreNPCUpdate,
-    EntityTypeCustom.DRONE,
+    DRONE_TYPE,
   ); // 69
 }

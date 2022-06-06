@@ -1,8 +1,12 @@
+import {
+  EntityGridCollisionClass,
+  GridEntityType,
+} from "isaac-typescript-definitions";
 import { game } from "isaacscript-common";
 import { DroneVariant } from "../enums/DroneVariant";
 import { Pathfinder } from "../pathfinding/pathfinder";
 
-const pather = new Pathfinder(EntityGridCollisionClass.GRIDCOLL_GROUND);
+const pather = new Pathfinder(EntityGridCollisionClass.GROUND);
 
 // ModCallbacks.MC_POST_NPC_INIT (27)
 export function worstCaseDronePostNPCInit(self: EntityNPC): void {
@@ -12,8 +16,8 @@ export function worstCaseDronePostNPCInit(self: EntityNPC): void {
 
   const room = game.GetRoom();
   const roomSeed = room.GetSpawnSeed();
-  room.SpawnGridEntity(17, GridEntityType.GRID_ROCK, 0, roomSeed, 0);
-  room.SpawnGridEntity(31, GridEntityType.GRID_ROCK, 0, roomSeed, 0);
+  room.SpawnGridEntity(17, GridEntityType.ROCK, 0, roomSeed, 0);
+  room.SpawnGridEntity(31, GridEntityType.ROCK, 0, roomSeed, 0);
 
   self.Position = room.GetGridPosition(118);
 }

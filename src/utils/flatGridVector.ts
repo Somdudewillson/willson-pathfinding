@@ -1,3 +1,4 @@
+import { RoomShape } from "isaac-typescript-definitions";
 import { isValidGridPosition } from "isaacscript-common";
 
 const MIN_VALUE = -2;
